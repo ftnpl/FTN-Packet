@@ -3,5 +3,5 @@ use ExtUtils::MakeMaker;
 #  the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'	=> 'FTN::Packet',
-    'VERSION_FROM' => 'Packet.pm', # finds $VERSION
+    'VERSION_FROM' => 'lib/FTN/Packet.pm', # finds $VERSION
 );

@@ -1,3 +1,10 @@
 To do:  FTN:Packet
 
+    writepkt()
+- When doing, for instance, two messages:  the two messages are making it into
+the packets but they're both the text of the second message.
+- Also the serial number for the MSGID is coming up as the same for both.  When
+code a better way of getting a 8 char serial number to use, add it as a function
+to the module?
+
   

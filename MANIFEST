@@ -1,7 +1,7 @@
 Changes
 MANIFEST
 Makefile.PL
-Packet.pm
+lib/FTN/Packet.pm
 README
 TODO
 t/test.pl

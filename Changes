@@ -1,17 +1,25 @@
 Revision history for Perl extension FTN::Packet
 
-0.01  Wed Jan 01 2003
+0.06  Sat Mar 27 2004
+    - Created the lib/FTN source directory and moved Packet.pm to it.
+    - Imported and created initial versions of readpkt & writepkt functions.
+    - Corrected version numbers in Changes file and Packet.pm to reflect
+      the actual changes.
+
+0.05  Mon Nov 10 2003
+    - Updated Copyright date
+
+0.04  Wed Jan 01 2003
     - Corrected year numbers to 2003.
 
-0.01  Wed Dec 26 2001
+0.03  Wed Dec 26 2001
     - in README;  added installation info & included '2002' in copyright
-    statement.
+      statement.
     
-0.01  Sun Dec 16 2001
+0.02  Sun Dec 16 2001
     - Corrected NAME reference in MakeFile.PL.
     - Added EXPORT_OK reference in Packet.pm
     - removed unnecessary reference to t directory
 
 0.01  Sat Jun  9 2001
-	- original version; created by R.J. Clay
-
+    - original version; created by R.J. Clay
