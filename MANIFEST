@@ -4,5 +4,4 @@ Makefile.PL
 Packet.pm
 README
 TODO
-t		        (directory)
 t/test.pl
