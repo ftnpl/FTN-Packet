@@ -1,6 +1,6 @@
 To do:  FTN:Packet
 
-    writepkt()
+    write_ftn_packet()
 - When doing, for instance, two messages:  the two messages are making it into
 the packets but they're both the text of the second message.
 - Also the serial number for the MSGID is coming up as the same for both.  When

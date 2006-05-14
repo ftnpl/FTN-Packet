@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.06
+VERSION 0.07
 
 =cut
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 =head1 DESCRIPTION
 
@@ -26,7 +26,8 @@ require AutoLoader;
 
 =head1 EXPORT
 
-The following functions are available in this module:  readpkt(), writepkt().
+The following functions are available in this module:  read_ftn_packet(),
+write_ftn_packet().
 
 =cut
 
@@ -36,18 +37,19 @@ The following functions are available in this module:  readpkt(), writepkt().
 # Do not simply export all your public functions/methods/constants.
 @EXPORT = qw(
 );
-@EXPORT_OK = qw( &readpkt(), &writepkt()
+@EXPORT_OK = qw( &read_ftn_packet(), &write_ftn_packet()
 	
 );
 
 =head1 FUNCTIONS
 
-=head2 readpkt
+=head2 read_ftn_packet
 
-Syntax:  @messages = readpkt(*PKT);
+Syntax:  $messages = read_ftn_packet(*PKT);
 
-Read a Fidonet/FTN packet.  Returns the messages in the packet as an array of
-hash references, which can be read as follows:
+Read a Fidonet/FTN packet.  Returns the messages in the packet as a reference
+to an array of hash references, which can be read as follows:
+
     $msg_ref = pop(@{$messages});
     $msg_area = ${$msg_ref}->('area');
     $msg_date = ${$msg_ref}->('ftnscdate');
@@ -65,7 +67,7 @@ hash references, which can be read as follows:
 ###############################################
 # Read Messages from FTN packet 
 ###############################################
-sub readpkt {
+sub read_ftn_packet {
 
     my ($PKT) = @_;
     # "$PKT" is a file pointer to the packet file being read
@@ -225,12 +227,12 @@ sub readpkt {
     
     return (\@messages);
     
-}   # end sub readpkt
+}   # end sub read_ftn_packet
 
 
-=head2 writepkt
+=head2 write_ftn_packet
 
-Syntax:  writepkt($OutDir, \%PktInfo, \@messages);
+Syntax:  write_ftn_packet($OutDir, \%PktInfo, \@messages);
 
 Create a Fidonet/FTN packet, where:
     $OutDir is the directory where the packet is to be created
@@ -239,7 +241,7 @@ Create a Fidonet/FTN packet, where:
 
 =cut
 
-sub writepkt {
+sub write_ftn_packet {
 
     my ($OutDir,$PktInfo, $messages) = @_;
 
@@ -393,11 +395,11 @@ Robert James Clay, jame@users.sf.net
 
 =head1 ACKNOWLEDGEMENTS
 
-Code for the readpkt function was initially derived from the newmsgs subroutine
+Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
 in the set of scripts for reading FTN packets (pkt2txt.pl, pkt2xml.pl, etc) by
 Russ Johnson L<airneil@users.sf.net> and Robert James Clay L<jame@users.sf.net>
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
-the writepkt function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
+the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
 
 =head1 SUPPORT
@@ -412,7 +414,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2004 Robert James Clay, all rights reserved.
+Copyright 2001-2004,2006 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it

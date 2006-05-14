@@ -1,5 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
+0.07  Sat May 13 2006
+    - Renamed the readpkt function as read_ftn_packet, and renamed the writepkt
+      function as write_ftn_packet.
+    - Corrected the pod documentation for the read_ftn_packet function. 
+
 0.06  Sat Mar 27 2004
     - Created the lib/FTN source directory and moved Packet.pm to it.
     - Imported and created initial versions of readpkt & writepkt functions.
