@@ -1,20 +1,18 @@
 FTN::Packet
 
-Copyright (c) 2001-2004,2006 Robert James Clay.  All Rights Reserved.
+Copyright (c) 2001-2004,2006,2008 Robert James Clay.  All Rights Reserved.
 This is free software;  you can redistribute it and/or
 mnodify it under the same terms as Perl itself.
 
-Perl module for processing Fidonet/FTN packets.  
+Perl module for reading or writing Fidonet/FTN packet files.
 
-  This is a snapshot of what I am currently using and/or testing 
-here at rocasa.org, updated daily as neccessary.  The archive is
-kept at http://rocasa.org/pub/ftn/pl/ftnplpkt.zip.
-
+For a more object oriented approach;  please see FTN::Pkt, available at
+www.cpan.org.
 
 For details, see documentation.
 
 To install:
-  Uncomprss the archive, then change to that newly
+  Uncompress the archive, then change to that newly
 created directory & do the following:
 
    1) perl Makefile.pl  

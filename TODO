@@ -7,4 +7,8 @@ the packets but they're both the text of the second message.
 code a better way of getting a 8 char serial number to use, add it as a function
 to the module?
 
+    read_ftn_packet()
+- Change the name of the appropriate fields in the packet related hashes to being
+named after how they are named in the fts-0001 documentation.
+
   

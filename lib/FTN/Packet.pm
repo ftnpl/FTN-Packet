@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.07
+VERSION 0.08
 
 =cut
 
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 =head1 DESCRIPTION
 
@@ -50,17 +50,17 @@ Syntax:  $messages = read_ftn_packet(*PKT);
 Read a Fidonet/FTN packet.  Returns the messages in the packet as a reference
 to an array of hash references, which can be read as follows:
 
-    $msg_ref = pop(@{$messages});
-    $msg_area = ${$msg_ref}->('area');
-    $msg_date = ${$msg_ref}->('ftnscdate');
-    $msg_tonode = ${$msg_ref}->('tonode');
-    $msg_from = ${$msg_ref}->('from');
-    $msg_body = ${$msg_ref}->('to');
-    $msg_subj = ${$msg_ref}->('subj');
-    $msg_msgid = ${$msg_ref}->('msgid');
-    $msg_replyid = ${$msg_ref}->('replyid');
-    $msg_body = ${$msg_ref}->('body');
-    $msg_ctrl = ${$msg_ref}->('ctrlinfo');
+    $message_ref = pop(@{$messages});
+    $msg_area = ${$message_ref}->('area');
+    $msg_date = ${$message_ref}->('ftnscdate');
+    $msg_tonode = ${$message_ref}->('tonode');
+    $msg_from = ${$message_ref}->('from');
+    $msg_body = ${$message_ref}->('to');
+    $msg_subj = ${$message_ref}->('subj');
+    $msg_msgid = ${$message_ref}->('msgid');
+    $msg_replyid = ${$message_ref}->('replyid');
+    $msg_body = ${$message_ref}->('body');
+    $msg_ctrl = ${$message_ref}->('ctrlinfo');
 
 =cut
 
@@ -73,43 +73,43 @@ sub read_ftn_packet {
     # "$PKT" is a file pointer to the packet file being read
     # Returns an array of hash references
 
-    my ($PKTver,$orgnode,$destnode,$orgnet,$destnet,$attrib,$cost,$buf);
-    my ($osep, $s, $datetime, $to, $from, $subj, $area, @lines, @kludges,
-	$fromnode, $tonode, @messages, $msgbody, $msgid, $replyid, $origin,
-	 $mailer, $seenby, $i, $k);
+    my ($packet_version,$origin_node,$destination_node,$origin_net,$destination_net,$attribute,$cost,$buffer);
+    my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges,
+	$from_node, $to_node, @messages, $message_body, $message_id, $reply_id, $origin,
+	 $mailer, $seen_by, $i, $k);
 
-    read($PKT,$buf,58);  	# Ignore packet header
+    read($PKT,$buffer,58);  	# Ignore packet header
 
     while (!eof($PKT)) {
     
-	last if (read(PKT, $buf, 14) != 14);
+	last if (read($PKT, $buffer, 14) != 14);
 	
-	($PKTver, $orgnode, $destnode, $orgnet, $destnet, $attrib, $cost) = unpack("SSSSSSS",$buf);
+	($packet_version, $origin_node, $destination_node, $origin_net, $destination_net, $attribute, $cost) = unpack("SSSSSSS",$buffer);
 
-	undef $PKTver;		#  not used for anything yet - 8/26/01 rjc
-	undef $attrib;		#  not used for anything yet - 8/26/01 rjc
-	undef $cost;		#  not used for anything yet - 12/15/01 rjc 
+	undef $packet_version;		#  not used for anything yet - 8/26/01 rjc
+	undef $attribute;		#  not used for anything yet - 8/26/01 rjc
+	undef $cost;			#  not used for anything yet - 12/15/01 rjc 
 
-	$osep = $/;                   
+	$separator = $/;                   
 	$/ = "\0";                    
 
-	$datetime = <PKT>;         
-	if (length($datetime) > 20) {
-             $to = substr($datetime,20);
+	$date_time = <$PKT>;         
+	if (length($date_time) > 20) {
+             $to = substr($date_time,20);
 	} else {
-	    $to = <PKT>;
+	    $to = <$PKT>;
 	}
-	$from = <PKT>;
-	$subj = <PKT>;
+	$from = <$PKT>;
+	$subject = <$PKT>;
 
 	$to   =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
 	$to   =~ tr/\0-\037/\040-\100/;     # mask control characters
 	$from =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
 	$from =~ tr/\0-\037/\040-\100/;     # mask control characters
-	$subj =~ tr/\0-\037/\040-\100/;     # mask control characters
+	$subject =~ tr/\0-\037/\040-\100/;     # mask control characters
 
-	$s = <PKT>;      
-	$/ = $osep;
+	$s = <$PKT>;      
+	$/ = $separator;
 
 	$s =~ s/\x8d/\r/g;    
 	@lines = split(/\r/,$s);  
@@ -145,7 +145,7 @@ sub read_ftn_packet {
 		$mailer = $_;
 	    }
 	    if (/seen-by/i) {
-		$seenby=$_;
+		$seen_by=$_;
 	    }
 	}
       
@@ -158,191 +158,188 @@ sub read_ftn_packet {
 	}
     
 	# get message body
-	$msgbody = "";	#  ensure that it starts empty
+	$message_body = "";	#  ensure that it starts empty
 
 	foreach $s (@lines) {
 	    $s =~ tr/\0-\037/\040-\100/;   
 	    $s =~ s/\s+$//;                
 	    $s=~tr/^\*/ /;
-	    $msgbody .= "$s\n"; 
+	    $message_body .= "$s\n"; 
 	}
 
-	$msgbody .= "$mailer\n" if ($mailer);
-	$msgbody .= " * Origin: $origin\n" if ($origin);
+	$message_body .= "$mailer\n" if ($mailer);
+	$message_body .= " * Origin: $origin\n" if ($origin);
 
 	# get control info
-	my $ctrlinfo = "";	#  ensure that it starts empty 
-	$ctrlinfo .= "$seenby\n" if ($seenby);
+	my $control_info = "";	#  ensure that it starts empty 
+	$control_info .= "$seen_by\n" if ($seen_by);
 	foreach $s (@kludges) {
 	    $s =~ s/^\001//;
 	    
 	    # If kludge starts with "MSGID:", stick that in a special 
 	    # variable. 
 	    if ( substr($s, 0, 6) eq "MSGID:" ) { 
-		$msgid = substr($s, 7);
+		$message_id = substr($s, 7);
 	    }
 	    
-	    $ctrlinfo .= "$s\n";
+	    $control_info .= "$s\n";
 	}
 
-	if ( ! $msgid) {
-	    $msged = "msged id not available";
+	if ( ! $message_id) {
+	    $message_id = "message id not available";
 	}
 
 	# get replyid from kludges? same way as get seenby?
-	$replyid = "reply id not available";
+	$reply_id = "reply id not available";
             
-	$fromnode =  "1:$orgnet/$orgnode\n";	# need to pull zone num's from
-	$tonode = "1:$destnet/$destnode\n";	# pkt instead of defaulting 1 
+	$from_node =  "1:$origin_net/$origin_node\n";	# need to pull zone num's from
+	$to_node = "1:$destination_net/$destination_node\n";	# pkt instead of defaulting 1 
     
-	my %msg_info = (
+	my %message_info = (
 
 	    area => $area,
     
-	    ftscdate => $datetime,
+	    ftscdate => $date_time,
 
-	    # removed this: $tz\n";  		# not useing this yet
+	    #cost => $cost,			# not useing this yet...
 
-	    #undef $cost;			# not useing this yet...
-	    fromnode => $fromnode,
-	    tonode => $tonode,
+	    fromnode => $from_node,
+	    tonode => $to_node,
 
 	    from => $from,
 	    to => $to,
-	    subj => $subj,
+	    subj => $subject,
 
-	    msgid => $msgid,    
-	    replyid => $replyid,  
+	    msgid => $message_id,    
+	    replyid => $reply_id,  
 
-	    body => $msgbody,
+	    body => $message_body,
 
-	    ctrlinfo => $ctrlinfo
+	    ctrlinfo => $control_info
 
 	);
     
-	push(@messages, \%msg_info);
+	push(@messages, \%message_info);
      
 
     }   # end while
     
-    return (\@messages);
+    return \@messages;
     
 }   # end sub read_ftn_packet
 
 
 =head2 write_ftn_packet
 
-Syntax:  write_ftn_packet($OutDir, \%PktInfo, \@messages);
+Syntax:  write_ftn_packet($OutDir, \%packet_info, \@messages);
 
 Create a Fidonet/FTN packet, where:
     $OutDir is the directory where the packet is to be created
-    \%PktInfo is a reference to a hash containing the packet header
+    \%packet_info is a reference to a hash containing the packet header
     \@messages is reference to an array of references to hashes containing the messages.
 
 =cut
 
 sub write_ftn_packet {
 
-    my ($OutDir,$PktInfo, $messages) = @_;
+    my ($OutDir, $packet_info, $messages) = @_;
 
-    my ($PktFile, @lines, $serialno, $buf, $i, $k, $msg_ref);
+    my ($packet_file, @lines, $serialno, $buffer, $i, $k, $message_ref);
 
     my $EOL = "\n\r";
     
-    # This part is a definition of the PKT format per FTS-0001
+    # This part is a definition of an FTN Packet format per FTS-0001
 
     # PKT Header; initialized variable are constants; last comments are
     #             in pack() notation
 
-    # ${$PktInfo}{OrgNode}				# S
-    # ${$PktInfo}{DestNode}			# S
-    my ($Year, $Mon, $Day, $Hour, $Min, $Sec);	# SSSSSS	
-    my $Baud = 0;				# S
-    my $PktVer = 2;				# S   Type 2 packet
-    # ${$PktInfo}{OrgNet}				# S
-    # ${$PktInfo}{DestNet}				# S
-    my $ProdCode = 0x100;			# S   product code: ?
-    # ${$PktInfo}{PassWord}			# a8
-    # ${$PktInfo}{OrgZone}				# S
-    # ${$PktInfo}{DestZone}			# S
-    my $AuxNet = ${$PktInfo}{OrgNet};		# S
-    my $CapWord = 0x100;			# S   capability word: Type 2+
-    my $ProdCode2 = 0;				# S   ?
-    my $CapWord2 = 1;				# S   byte swapped cap. word
-    # ${$PktInfo}{OrgZone}				# S   (repeat)
-    # ${$PktInfo}{DestZone}			# S   (repeat)
-    # ${$PktInfo}{OrgPoint}			# S
+    # ${$packet_info}{OrgNode}				# S
+    # ${$packet_info}{DestNode}				# S
+    my ($year, $month, $day, $hour, $minutes, $seconds);	# SSSSSS	
+    my $Baud = 0;					# S
+    my $packet_version = 2;				# S   Type 2 packet
+    # ${$packet_info}{OrgNet}				# S
+    # ${$packet_info}{DestNet}				# S
+    my $ProdCode = 0x100;				# S   product code: ?
+    # ${$packet_info}{PassWord}				# a8
+    # ${$packet_info}{OrgZone}				# S
+    # ${$packet_info}{DestZone}				# S
+    my $AuxNet = ${$packet_info}{OrgNet};		# S
+    my $CapWord = 0x100;				# S   capability word: Type 2+
+    my $ProdCode2 = 0;					# S   ?
+    my $CapWord2 = 1;					# S   byte swapped cap. word
+    # ${$packet_info}{OrgZone}				# S   (repeat)
+    # ${$packet_info}{DestZone}				# S   (repeat)
+    # ${$packet_info}{OrgPoint}				# S
     #  config file for node info?
-    # ${$PktInfo}{DestPoint}			# S
-    my $ProdSpec = 0;				# L   ?
+    # ${$packet_info}{DestPoint}			# S
+    my $ProdSpec = 0;					# L   ?
 
     # MSG Header; duplicated variables are shown as comments to indicate
     #             the MSG Header structure
 
-    # $PktVer				# S   (repeat)
-    # ${$PktInfo}{OrgNode}			# S   (repeat)
-    # ${$PktInfo}{DestNode}		# S   (repeat)
-    # ${$PktInfo}{OrgNet}			# S   (repeat)
-    # ${$PktInfo}{DestNet}			# S   (repeat)
-    my $Attrib = 0;			# S
-    my $Cost = 0;			# S
-    # ${$msg_ref}{DateTime}		# a20 (this is a local())
-    # ${$msg_ref}{To}			# a? (36 max)
-    # ${$msg_ref}{From}			# a? (36 max)
-    # ${$msg_ref}{Subj}			# a? (72 max)
+    # $packet_version					# S   (repeat)
+    # ${$packet_info}{OrgNode}				# S   (repeat)
+    # ${$packet_info}{DestNode}				# S   (repeat)
+    # ${$packet_info}{OrgNet}				# S   (repeat)
+    # ${$packet_info}{DestNet}				# S   (repeat)
+    my $attribute = 0;					# S
+    my $Cost = 0;					# S
+    # ${$message_ref}{DateTime}				# a20 (this is a local())
+    # ${$message_ref}{To}				# a? (36 max)
+    # ${$message_ref}{From}				# a? (36 max)
+    # ${$message_ref}{Subj}				# a? (72 max)
 
-    #"AREA: "                           # c6          }
-    # ${$PktInfo}{Area}			# a? (max?)   } all this is actually part
-    #possible kludges go here. 0x01<TAG>0x0D          } of the TEXT postions
-    #TEXT goes here. (ends with 2 0x0D's ???)         }
+    #"AREA: "                           		# c6          }
+    # ${$packet_info}{Area}				# a? (max?)   } all this is actually part
+    #possible kludges go here. 0x01<TAG>0x0D          	} of the TEXT postions
+    #TEXT goes here. (ends with 2 0x0D's ???)        	}
 
-    # ${$PktInfo}{TearLine}
-    my $Origin = " * Origin: ${$PktInfo}{Origin}  (${$PktInfo}{OrgZone}:${$PktInfo}{OrgNet}/${$PktInfo}{OrgNode}.1)$EOL";
-    my $SeenBy = "SEEN-BY: ${$PktInfo}{OrgNet}/${$PktInfo}{OrgNode}$EOL";
-    my $Path = "\1PATH: ${$PktInfo}{OrgNet}/${$PktInfo}{OrgNode}$EOL\0";          # note the \0 in $Path
+    # ${$packet_info}{TearLine}
+    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.1)$EOL";
+    my $seen_by = "SEEN-BY: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL";
+    my $Path = "\1PATH: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL\0";          # note the \0 in $Path
 
     # repeat MSG Headers/TEXT
 
     # null (S) to mark done
 
-    my $nmsgs = 0;
-
     # this is where a loop would go if more than one feed
 
     # PKT name as per FTS
-    ($Sec, $Min, $Hour, $Day, $Mon, $Year) = localtime();
-    $Year += 2000;
+    ($seconds, $minutes, $hour, $day, $month, $year) = localtime();
+    $year += 2000;
     #  does the above actually give a two digit year? 
-    #			the original above was 1900 instead of 1900
-    $PktFile = sprintf("%s/%02d%02d%02d%02d.PKT",$OutDir,$Day,$Hour,$Min,$Sec);
+    #			the original above was 1900 instead of 2000
+    $packet_file = sprintf("%s/%02d%02d%02d%02d.pkt",$OutDir,$day,$hour,$minutes,$seconds);
 
-    open(PKT,">$PktFile") || die;
+    open($PKT,">$packet_file") || die;
 
-    binmode(PKT);
+    binmode{$PKT);
 
     #	write packet header
-    $buf = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
-               ${$PktInfo}{OrgNode}, ${$PktInfo}{DestNode},
-               $Year, $Mon, $Day, $Hour, $Min, $Sec,
-               $Baud, $PktVer,
-               ${$PktInfo}{OrgNet}, ${$PktInfo}{DestNet},
-               $ProdCode, ${$PktInfo}{PassWord},
-               ${$PktInfo}{OrgZone}, ${$PktInfo}{DestZone}, $AuxNet,
+    $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
+               ${$packet_info}{OrgNode}, ${$packet_info}{DestNode},
+               $year, $month, $day, $hour, $minutes, $seconds,
+               $Baud, $packet_version,
+               ${$packet_info}{OrgNet}, ${$packet_info}{DestNet},
+               $ProdCode, ${$packet_info}{PassWord},
+               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
-               ${$PktInfo}{OrgZone}, ${$PktInfo}{DestZone},
-               ${$PktInfo}{OrgPoint}, ${$PktInfo}{DestPoint}, $ProdSpec);
-    syswrite(PKT,$buf,58);
+               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone},
+               ${$packet_info}{OrgPoint}, ${$packet_info}{DestPoint}, $ProdSpec);
+    syswrite($PKT,$buffer,58);
 
     # needs to iterate over the array of hashes representing the messages
-    foreach $msg_ref ( @{$messages} ) {
+    foreach $message_ref ( @{$messages} ) {
     #while ( @{$messages} > 0) {
     #while ( @{$messages} ) {
 
-	#$msg_ref = pop(@{$messages});			# get next message hash reference
+	#$message_ref = pop(@{$messages});			# get next message hash reference
          
 	# get text body, translate LFs to CRs
          
-	@lines = ${$msg_ref}{Body};
+	@lines = ${$message_ref}{Body};
 	grep(s/\n/\r/,@lines);
          
 	# kill leading blank lines
@@ -351,33 +348,33 @@ sub write_ftn_packet {
                   
 	++$nmsgs;                           # informative only
          
-	# write message to PKT file
+	# write message to $PKT file
          
 	# Write Message Header	    
-	$buf = pack("SSSSSSSa20",
-		$PktVer,${$PktInfo}{OrgNode},${$PktInfo}{DestNode},${$PktInfo}{OrgNet},
-		${$PktInfo}{DestNet},$Attrib,$Cost,${$msg_ref}{DateTime});
-	print PKT $buf;
+	$buffer = pack("SSSSSSSa20",
+		$packet_version,${$packet_info}{OrgNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
+		${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
+	print $PKT $buffer;
 
-	print PKT "${$msg_ref}{To}\0";
-	print PKT "${$msg_ref}{From}\0";
-	print PKT "${$msg_ref}{Subj}\0";
-	print PKT "AREA: ${$PktInfo}{Area}$EOL";         # note: CR not nul
+	print $PKT "${$message_ref}{To}\0";
+	print $PKT "${$message_ref}{From}\0";
+	print $PKT "${$message_ref}{Subj}\0";
+	print $PKT "AREA: ${$packet_info}{Area}$EOL";         # note: CR not nul
          
 	$serialno = unpack("%16C*",join('',@lines));
 	$serialno = sprintf("%lx",$serialno + time);
-	print PKT "\1MSGID: ${$PktInfo}{OrgZone}:${$PktInfo}{OrgNet}/${$PktInfo}{OrgNode}.${$PktInfo}{OrgPoint} $serialno$EOL";
+	print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.${$packet_info}{OrgPoint} $serialno$EOL";
          
-	print PKT @lines; 
-	print PKT $EOL,${$PktInfo}{TearLine},$Origin,$SeenBy,$Path;
+	print $PKT @lines; 
+	print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
          
 	@lines = ();                        # all done with array (frees mem?)
           
     }
     
-    print PKT "\0\0";                      # indicates no more messages
+    print $PKT "\0\0";                      # indicates no more messages
 
-    close(PKT);
+    close($PKT);
 
     return 0;
 }
@@ -414,7 +411,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2004,2006 Robert James Clay, all rights reserved.
+Copyright 2001-2004,2006,2008 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
