@@ -388,13 +388,13 @@ __END__
 
 =head1 AUTHORS
 
-Robert James Clay, jame@users.sf.net
+Robert James Clay, jame@rocasa.us
 
 =head1 ACKNOWLEDGEMENTS
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
 in the set of scripts for reading FTN packets (pkt2txt.pl, pkt2xml.pl, etc) by
-Russ Johnson L<airneil@users.sf.net> and Robert James Clay L<jame@users.sf.net>
+Russ Johnson L<airneil@users.sf.net> and Robert James Clay L<jame@rocasa.us>
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.

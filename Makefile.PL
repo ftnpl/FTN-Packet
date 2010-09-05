@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 #  the contents of the Makefile that is written.
 WriteMakefile(
     NAME		=> 'FTN::Packet',
-    AUTHOR              => 'Robert James Clay <jame@users.sf.net>',
+    AUTHOR              => 'Robert James Clay <jame@rocasa.us>',
     VERSION_FROM	=> 'lib/FTN/Packet.pm',
     ABSTRACT_FROM	=> 'lib/FTN/Packet.pm', 
     LICENSE        	=> 'perl',
