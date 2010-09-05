@@ -7,6 +7,11 @@ WriteMakefile(
     VERSION_FROM	=> 'lib/FTN/Packet.pm',
     ABSTRACT_FROM	=> 'lib/FTN/Packet.pm', 
     LICENSE        	=> 'perl',
+    PREREQ_PM => {
+        'Test::More' 		=> 0,
+        'Test::Pod'             => 1.22,
+        'Test::Pod::Coverage'   => 1.08
+    },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'FTN-Packet-*' },
 );
