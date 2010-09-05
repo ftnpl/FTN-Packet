@@ -4,4 +4,6 @@ Makefile.PL
 lib/FTN/Packet.pm
 README
 TODO
-t/test.pl
+t/00-load.t
+t/pod-coverage.t
+t/pod.t
