@@ -1,7 +1,13 @@
 Revision history for Perl extension FTN::Packet
 
-0.09  ??? ??? ?? 2010
-
+0.09  Sun Sep 05 2010
+    - Change to using the TEST modules for testing.
+    - Change how Author copyright years is listed.
+    - Moved updated TODO file to doc source directory.
+    - Change the Author email being used to jame@rocasa.us.
+    - Updated Makefile.pl;  adding items for AUTHOR, ABSTRACT_FROM, LICENSE,
+      dist, & clean.
+    
 0.08  Sun Dec 21 2008
     - Do some clean up of usage and naming of variables, as well as to the
       documentation.
