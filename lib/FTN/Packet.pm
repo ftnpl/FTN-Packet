@@ -329,7 +329,7 @@ sub write_ftn_packet {
 
     open( $PKT, q{>}, "$packet_file" ) || die;
 
-    binmode{$PKT);
+    binmode($PKT);
 
     #	write packet header
     $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
