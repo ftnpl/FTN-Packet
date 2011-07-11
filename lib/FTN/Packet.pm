@@ -133,7 +133,7 @@ sub read_ftn_packet {
         $area =~ s/.*://;
 
         # Force upper case ???
-        $area =~ tr/a-z/A-Z/;	
+        $area =~ tr/a-z/A-Z/;
 
         @kludges = ();
 
@@ -168,8 +168,8 @@ sub read_ftn_packet {
             @lines = ("[empty message]");
         }
 
-        # get message body
-        $message_body = "";	#  ensure that it starts empty
+        # get message body, ensuring that it starts empty
+        $message_body = "";
 
         foreach my $s (@lines) {
             $s =~ tr/\0-\037/\040-\100/;
@@ -181,14 +181,14 @@ sub read_ftn_packet {
         $message_body .= "$mailer\n" if ($mailer);
         $message_body .= " * Origin: $origin\n" if ($origin);
 
-        # get control info
-        my $control_info = "";	#  ensure that it starts empty 
+        # get control info, ensuring that it starts empty
+        my $control_info = "";
         $control_info .= "$seen_by\n" if ($seen_by);
         foreach my $c (@kludges) {
             $c =~ s/^\001//;
 
             # If kludge starts with "MSGID:", stick that in a special 
-            # variable. 
+            # variable.
             if ( substr($c, 0, 6) eq "MSGID:" ) {
                 $message_id = substr($c, 7);
             }
@@ -321,15 +321,14 @@ sub write_ftn_packet {
     # PKT name as per FTS
     ($seconds, $minutes, $hour, $day, $month, $year) = localtime();
     $year += 1900;
-    #  does the above actually give a two digit year? 
-    #			the original above was 1900 instead of 2000
+
     $packet_file = sprintf("%s/%02d%02d%02d%02d.pkt",$OutDir,$day,$hour,$minutes,$seconds);
 
     open( $PKT, q{>}, "$packet_file" ) || die;
 
     binmode($PKT);
 
-    #	write packet header
+    # write packet header
     $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
                ${$packet_info}{OrgNode}, ${$packet_info}{DestNode},
                $year, $month, $day, $hour, $minutes, $seconds,
