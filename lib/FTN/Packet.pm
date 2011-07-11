@@ -353,7 +353,7 @@ sub write_ftn_packet {
         # get text body, translate LFs to CRs
 
         @lines = ${$message_ref}{Body};
-        grep(s/\n/\r/,@lines);
+        grep { s/\n/\r/ }, @lines;
 
         # kill leading blank lines
 
