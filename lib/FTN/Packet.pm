@@ -52,7 +52,7 @@ to an array of hash references, which can be read as follows:
 
     $message_ref = pop(@{$messages});
     $msg_area = ${$message_ref}->('area');
-    $msg_date = ${$message_ref}->('ftnscdate');
+    $msg_date = ${$message_ref}->('ftscdate');
     $msg_tonode = ${$message_ref}->('tonode');
     $msg_from = ${$message_ref}->('from');
     $msg_body = ${$message_ref}->('to');
