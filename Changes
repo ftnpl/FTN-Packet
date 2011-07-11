@@ -1,5 +1,14 @@
 Revision history for Perl extension FTN::Packet
 
+0.10  Mon Jul 11 2011
+    - Explicitly use warnings in Packet.pm.
+    - Make loop iterators in Packet.pm lexical.
+    - Correct binmode call at line 332 of Packet.pm
+    - Use three argument version of open() in Packet.pm.
+    - Some general cleanup of white space in Packet.pm.
+    - Correct misspelling of ftnscdate to ftscdate in Packet.pm.
+    - Correct year number adjustment from 2000 to 1900 in Packet.pm.
+
 0.09  Sun Sep 05 2010
     - Change to using the TEST modules for testing.
     - Change how Author copyright years is listed.
