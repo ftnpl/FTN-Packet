@@ -308,7 +308,7 @@ sub write_ftn_packet {
 
     # PKT name as per FTS
     ($seconds, $minutes, $hour, $day, $month, $year) = localtime();
-    $year += 2000;
+    $year += 1900;
     #  does the above actually give a two digit year? 
     #			the original above was 1900 instead of 2000
     $packet_file = sprintf("%s/%02d%02d%02d%02d.pkt",$OutDir,$day,$hour,$minutes,$seconds);
