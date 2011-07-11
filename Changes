@@ -1,5 +1,7 @@
 Revision history for Perl extension FTN::Packet
 
+0.13  ??? Jul ?? 2011  
+
 0.12  Mon Jul 11 2011 17:11 
     - Correct line for TODO file in MANIFEST.
     - Correct grep line number 355 in Packet.pm.
