@@ -410,7 +410,7 @@ Robert James Clay, jame@rocasa.us
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
 in the set of scripts for reading FTN packets (pkt2txt.pl, pkt2xml.pl, etc) by
-Russ Johnson L<airneil@users.sf.net> and Robert James Clay L<jame@rocasa.us>
+Russ Johnson L<mailto:airneil@users.sf.net> and Robert James Clay L<mailto:jame@rocasa.us>
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
