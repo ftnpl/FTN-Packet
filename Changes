@@ -1,5 +1,7 @@
 Revision history for Perl extension FTN::Packet
 
+0.11  ??? Jul ?? 2011
+
 0.10  Mon Jul 11 2011
     - Explicitly use warnings in Packet.pm.
     - Make loop iterators in Packet.pm lexical.
