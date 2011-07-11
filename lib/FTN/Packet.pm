@@ -2,7 +2,6 @@ package FTN::Packet;
 
 use strict;
 use warnings;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
 =head1 NAME
 
@@ -10,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.10
+VERSION 0.11
 
 =cut
 
-$VERSION = '0.10';
+our $VERSION = '0.11';
 
 =head1 DESCRIPTION
 
@@ -38,8 +37,7 @@ write_ftn_packet().
 # Do not simply export all your public functions/methods/constants.
 @EXPORT = qw(
 );
-@EXPORT_OK = qw( &read_ftn_packet(), &write_ftn_packet()
-	
+@EXPORT_OK = qw( &read_ftn_packet &write_ftn_packet
 );
 
 =head1 FUNCTIONS
@@ -98,7 +96,7 @@ sub read_ftn_packet {
         undef $cost;
 
         $separator = $/;
-        $/ = "\0";
+        local $/ = "\0";
 
         $date_time = <$PKT>;
         if (length($date_time) > 20) {
@@ -116,7 +114,7 @@ sub read_ftn_packet {
         $subject =~ tr/\0-\037/\040-\100/;     # mask control characters
 
         $s = <$PKT>;
-        $/ = $separator;
+        local $/ = $separator;
 
         $s =~ s/\x8d/\r/g;
         @lines = split(/\r/,$s);
@@ -258,7 +256,7 @@ sub write_ftn_packet {
 
     my ($OutDir, $packet_info, $messages) = @_;
 
-    my ($packet_file, @lines, $serialno, $buffer, $i, $k, $message_ref);
+    my ($packet_file, $PKT, @lines, $serialno, $buffer, $nmsgs, $i, $k, $message_ref);
 
     my $EOL = "\n\r";
 
@@ -355,7 +353,7 @@ sub write_ftn_packet {
         # get text body, translate LFs to CRs
 
         @lines = ${$message_ref}{Body};
-        grep(s/\n/\r/,@lines);
+        grep { s/\n/\r/ }, @lines;
 
         # kill leading blank lines
 
@@ -397,6 +395,7 @@ sub write_ftn_packet {
     return 0;
 }
 
+1;
 __END__
 
 =head1 EXAMPLES
@@ -412,7 +411,7 @@ Robert James Clay, jame@rocasa.us
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
 in the set of scripts for reading FTN packets (pkt2txt.pl, pkt2xml.pl, etc) by
-Russ Johnson L<airneil@users.sf.net> and Robert James Clay L<jame@rocasa.us>
+Russ Johnson L<mailto:airneil@users.sf.net> and Robert James Clay L<mailto:jame@rocasa.us>
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
@@ -429,7 +428,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2010 Robert James Clay, all rights reserved.
+Copyright 2001-2011 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
@@ -437,4 +436,3 @@ under the same terms as Perl itself.
 
 =cut
 
-1;
