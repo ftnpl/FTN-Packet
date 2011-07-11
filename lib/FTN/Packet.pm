@@ -2,7 +2,6 @@ package FTN::Packet;
 
 use strict;
 use warnings;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
 =head1 NAME
 
