@@ -96,7 +96,7 @@ sub read_ftn_packet {
         undef $cost;
 
         $separator = $/;
-        $/ = "\0";
+        local $/ = "\0";
 
         $date_time = <$PKT>;
         if (length($date_time) > 20) {
@@ -114,7 +114,7 @@ sub read_ftn_packet {
         $subject =~ tr/\0-\037/\040-\100/;     # mask control characters
 
         $s = <$PKT>;
-        $/ = $separator;
+        local $/ = $separator;
 
         $s =~ s/\x8d/\r/g;
         @lines = split(/\r/,$s);
