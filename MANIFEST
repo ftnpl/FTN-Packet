@@ -3,7 +3,7 @@ MANIFEST
 Makefile.PL
 lib/FTN/Packet.pm
 README
-TODO
+doc/TODO
 t/00-load.t
 t/pod-coverage.t
 t/pod.t
