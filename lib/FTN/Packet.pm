@@ -395,6 +395,7 @@ sub write_ftn_packet {
     return 0;
 }
 
+1;
 __END__
 
 =head1 EXAMPLES
@@ -435,4 +436,3 @@ under the same terms as Perl itself.
 
 =cut
 
-1;
