@@ -1,8 +1,15 @@
 Revision history for Perl extension FTN::Packet
 
-0.11  ??? Jul ?? 2011
+0.11  Mon Jul 11 2011 15:26
+    - Correct POD email links in Packet.pm.
+    - Rewrite grep at line 356 in Packet.pm.
+    - Corrections for EXPORT_OK in Packet.pm.
+    - Update RJC copyright years to include 2011.
+    - Localize usage of separator value in Packet.pm.
+    - Explicitly set scope for $VERSION, $PKT, and $nmesgs in Packet.pm.
+    - Correct where code ends in Packet.pm by moving the "1;" to line 398.
 
-0.10  Mon Jul 11 2011
+0.10  Mon Jul 11 2011 12:30
     - Explicitly use warnings in Packet.pm.
     - Make loop iterators in Packet.pm lexical.
     - Correct binmode call at line 332 of Packet.pm
