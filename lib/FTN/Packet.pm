@@ -1,6 +1,7 @@
 package FTN::Packet;
 
 use strict;
+use warnings;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
 =head1 NAME
@@ -75,157 +76,170 @@ sub read_ftn_packet {
 
     my ($packet_version,$origin_node,$destination_node,$origin_net,$destination_net,$attribute,$cost,$buffer);
     my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges,
-	$from_node, $to_node, @messages, $message_body, $message_id, $reply_id, $origin,
-	 $mailer, $seen_by, $i, $k);
+        $from_node, $to_node, @messages, $message_body, $message_id, $reply_id, $origin,
+        $mailer, $seen_by, $i, $k);
 
-    read($PKT,$buffer,58);  	# Ignore packet header
+    # Ignore packet header
+    read($PKT,$buffer,58);
 
     while (!eof($PKT)) {
-    
-	last if (read($PKT, $buffer, 14) != 14);
-	
-	($packet_version, $origin_node, $destination_node, $origin_net, $destination_net, $attribute, $cost) = unpack("SSSSSSS",$buffer);
 
-	undef $packet_version;		#  not used for anything yet - 8/26/01 rjc
-	undef $attribute;		#  not used for anything yet - 8/26/01 rjc
-	undef $cost;			#  not used for anything yet - 12/15/01 rjc 
+        last if (read($PKT, $buffer, 14) != 14);
 
-	$separator = $/;                   
-	$/ = "\0";                    
+        ($packet_version, $origin_node, $destination_node, $origin_net, $destination_net, $attribute, $cost) = unpack("SSSSSSS",$buffer);
 
-	$date_time = <$PKT>;         
-	if (length($date_time) > 20) {
+        #  not used for anything yet - 8/26/01 rjc
+        undef $packet_version;
+
+        #  not used for anything yet - 8/26/01 rjc
+        undef $attribute;
+
+        #  not used for anything yet - 12/15/01 rjc 
+        undef $cost;
+
+        $separator = $/;
+        $/ = "\0";
+
+        $date_time = <$PKT>;
+        if (length($date_time) > 20) {
              $to = substr($date_time,20);
-	} else {
-	    $to = <$PKT>;
-	}
-	$from = <$PKT>;
-	$subject = <$PKT>;
+        } else {
+            $to = <$PKT>;
+        }
+        $from = <$PKT>;
+        $subject = <$PKT>;
 
-	$to   =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
-	$to   =~ tr/\0-\037/\040-\100/;     # mask control characters
-	$from =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
-	$from =~ tr/\0-\037/\040-\100/;     # mask control characters
-	$subject =~ tr/\0-\037/\040-\100/;     # mask control characters
+        $to   =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
+        $to   =~ tr/\0-\037/\040-\100/;     # mask control characters
+        $from =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
+        $from =~ tr/\0-\037/\040-\100/;     # mask control characters
+        $subject =~ tr/\0-\037/\040-\100/;     # mask control characters
 
-	$s = <$PKT>;      
-	$/ = $separator;
+        $s = <$PKT>;
+        $/ = $separator;
 
-	$s =~ s/\x8d/\r/g;    
-	@lines = split(/\r/,$s);  
+        $s =~ s/\x8d/\r/g;
+        @lines = split(/\r/,$s);
 
-	undef $s;     
+        undef $s;
 
-	next if ($#lines < 0);      
+        next if ($#lines < 0);
 
-	$area = shift(@lines);          
-	$_ = $area;
-	$area ="NETMAIL" if /\//i;		# default netmail area name
-	$area =~ s/.*://;			# strip "area:"
-	$area =~ tr/a-z/A-Z/;			# Force upper case ???
-          
-	@kludges = ();
+        $area = shift(@lines);
+        $_ = $area;
 
-	for ($i = $k = 0; $i <= $#lines; $i++) {
-	    
-	    if ($lines[$i] =~ /^\001/) {       
-		$kludges[$k++] = splice(@lines,$i,1);
-		redo;
-	    }
-	}
-          
-	for (;;) {
-	    $_ = pop(@lines);
-	    last if ($_ eq "");  
-	    if (/ \* origin: /i) {
-		$origin = substr($_,11);
-		last;
-	    }
-	    if (/---/) {
-		$mailer = $_;
-	    }
-	    if (/seen-by/i) {
-		$seen_by=$_;
-	    }
-	}
-      
-	if ( ! $mailer ) {
-	    $mailer = "---";
-	}
+        # default netmail area name
+        $area ="NETMAIL" if /\//i;
 
-	if ($#lines < 0) {
-	    @lines = ("[empty message]");
-	}
-    
-	# get message body
-	$message_body = "";	#  ensure that it starts empty
+        # strip "area:"
+        $area =~ s/.*://;
 
-	foreach $s (@lines) {
-	    $s =~ tr/\0-\037/\040-\100/;   
-	    $s =~ s/\s+$//;                
-	    $s=~tr/^\*/ /;
-	    $message_body .= "$s\n"; 
-	}
+        # Force upper case ???
+        $area =~ tr/a-z/A-Z/;	
 
-	$message_body .= "$mailer\n" if ($mailer);
-	$message_body .= " * Origin: $origin\n" if ($origin);
+        @kludges = ();
 
-	# get control info
-	my $control_info = "";	#  ensure that it starts empty 
-	$control_info .= "$seen_by\n" if ($seen_by);
-	foreach $s (@kludges) {
-	    $s =~ s/^\001//;
-	    
-	    # If kludge starts with "MSGID:", stick that in a special 
-	    # variable. 
-	    if ( substr($s, 0, 6) eq "MSGID:" ) { 
-		$message_id = substr($s, 7);
-	    }
-	    
-	    $control_info .= "$s\n";
-	}
+        for ($i = $k = 0; $i <= $#lines; $i++) {
 
-	if ( ! $message_id) {
-	    $message_id = "message id not available";
-	}
+            if ($lines[$i] =~ /^\001/) {
+                $kludges[$k++] = splice(@lines,$i,1);
+                redo;
+            }
+        }
 
-	# get replyid from kludges? same way as get seenby?
-	$reply_id = "reply id not available";
-            
-	$from_node =  "1:$origin_net/$origin_node\n";	# need to pull zone num's from
-	$to_node = "1:$destination_net/$destination_node\n";	# pkt instead of defaulting 1 
-    
-	my %message_info = (
+        for (;;) {
+            $_ = pop(@lines);
+            last if ($_ eq "");
+            if (/ \* origin: /i) {
+                $origin = substr($_,11);
+                last;
+            }
+        if (/---/) {
+                $mailer = $_;
+        }
+            if (/seen-by/i) {
+                $seen_by=$_;
+            }
+        }
 
-	    area => $area,
-    
-	    ftscdate => $date_time,
+        if ( ! $mailer ) {
+            $mailer = "---";
+        }
 
-	    #cost => $cost,			# not useing this yet...
+        if ($#lines < 0) {
+            @lines = ("[empty message]");
+        }
 
-	    fromnode => $from_node,
-	    tonode => $to_node,
+        # get message body
+        $message_body = "";	#  ensure that it starts empty
 
-	    from => $from,
-	    to => $to,
-	    subj => $subject,
+        foreach $s (@lines) {
+            $s =~ tr/\0-\037/\040-\100/;
+            $s =~ s/\s+$//;
+            $s=~tr/^\*/ /;
+            $message_body .= "$s\n";
+        }
 
-	    msgid => $message_id,    
-	    replyid => $reply_id,  
+        $message_body .= "$mailer\n" if ($mailer);
+        $message_body .= " * Origin: $origin\n" if ($origin);
 
-	    body => $message_body,
+        # get control info
+        my $control_info = "";	#  ensure that it starts empty 
+        $control_info .= "$seen_by\n" if ($seen_by);
+        foreach $s (@kludges) {
+            $s =~ s/^\001//;
 
-	    ctrlinfo => $control_info
+            # If kludge starts with "MSGID:", stick that in a special 
+            # variable. 
+            if ( substr($s, 0, 6) eq "MSGID:" ) {
+                $message_id = substr($s, 7);
+            }
 
-	);
-    
-	push(@messages, \%message_info);
-     
+            $control_info .= "$s\n";
+        }
+
+        if ( ! $message_id) {
+            $message_id = "message id not available";
+        }
+
+        # get replyid from kludges? same way as get seenby?
+        $reply_id = "reply id not available";
+
+        # need to pull zone num's from pkt instead of defaulting 1 
+        $from_node =  "1:$origin_net/$origin_node\n";
+        $to_node = "1:$destination_net/$destination_node\n";
+
+        my %message_info = (
+
+            area => $area,
+
+            ftscdate => $date_time,
+
+            ## not useing this yet...
+            #cost => $cost,
+
+            fromnode => $from_node,
+            tonode => $to_node,
+
+            from => $from,
+            to => $to,
+            subj => $subject,
+
+            msgid => $message_id,    
+            replyid => $reply_id,  
+
+            body => $message_body,
+
+            ctrlinfo => $control_info
+
+            );
+
+            push(@messages, \%message_info);
 
     }   # end while
-    
+
     return \@messages;
-    
+
 }   # end sub read_ftn_packet
 
 
@@ -247,53 +261,53 @@ sub write_ftn_packet {
     my ($packet_file, @lines, $serialno, $buffer, $i, $k, $message_ref);
 
     my $EOL = "\n\r";
-    
+
     # This part is a definition of an FTN Packet format per FTS-0001
 
     # PKT Header; initialized variable are constants; last comments are
     #             in pack() notation
 
-    # ${$packet_info}{OrgNode}				# S
-    # ${$packet_info}{DestNode}				# S
-    my ($year, $month, $day, $hour, $minutes, $seconds);	# SSSSSS	
-    my $Baud = 0;					# S
-    my $packet_version = 2;				# S   Type 2 packet
-    # ${$packet_info}{OrgNet}				# S
-    # ${$packet_info}{DestNet}				# S
-    my $ProdCode = 0x100;				# S   product code: ?
-    # ${$packet_info}{PassWord}				# a8
-    # ${$packet_info}{OrgZone}				# S
-    # ${$packet_info}{DestZone}				# S
-    my $AuxNet = ${$packet_info}{OrgNet};		# S
-    my $CapWord = 0x100;				# S   capability word: Type 2+
-    my $ProdCode2 = 0;					# S   ?
-    my $CapWord2 = 1;					# S   byte swapped cap. word
-    # ${$packet_info}{OrgZone}				# S   (repeat)
-    # ${$packet_info}{DestZone}				# S   (repeat)
-    # ${$packet_info}{OrgPoint}				# S
+    # ${$packet_info}{OrgNode}                              # S
+    # ${$packet_info}{DestNode}                             # S
+    my ($year, $month, $day, $hour, $minutes, $seconds);    # SSSSSS
+    my $Baud = 0;                                           # S
+    my $packet_version = 2;                                 # S   Type 2 packet
+    # ${$packet_info}{OrgNet}                               # S
+    # ${$packet_info}{DestNet}                              # S
+    my $ProdCode = 0x100;                                   # S   product code: ?
+    # ${$packet_info}{PassWord}                             # a8
+    # ${$packet_info}{OrgZone}                              # S
+    # ${$packet_info}{DestZone}                             # S
+    my $AuxNet = ${$packet_info}{OrgNet};                   # S
+    my $CapWord = 0x100;                                    # S   capability word: Type 2+
+    my $ProdCode2 = 0;                                      # S   ?
+    my $CapWord2 = 1;                                       # S   byte swapped cap. word
+    # ${$packet_info}{OrgZone}                              # S   (repeat)
+    # ${$packet_info}{DestZone}                             # S   (repeat)
+    # ${$packet_info}{OrgPoint}                             # S
     #  config file for node info?
-    # ${$packet_info}{DestPoint}			# S
-    my $ProdSpec = 0;					# L   ?
+    # ${$packet_info}{DestPoint}                            # S
+    my $ProdSpec = 0;                                       # L   ?
 
     # MSG Header; duplicated variables are shown as comments to indicate
     #             the MSG Header structure
 
-    # $packet_version					# S   (repeat)
-    # ${$packet_info}{OrgNode}				# S   (repeat)
-    # ${$packet_info}{DestNode}				# S   (repeat)
-    # ${$packet_info}{OrgNet}				# S   (repeat)
-    # ${$packet_info}{DestNet}				# S   (repeat)
-    my $attribute = 0;					# S
-    my $Cost = 0;					# S
-    # ${$message_ref}{DateTime}				# a20 (this is a local())
-    # ${$message_ref}{To}				# a? (36 max)
-    # ${$message_ref}{From}				# a? (36 max)
-    # ${$message_ref}{Subj}				# a? (72 max)
+    # $packet_version                                   # S   (repeat)
+    # ${$packet_info}{OrgNode}                          # S   (repeat)
+    # ${$packet_info}{DestNode}                         # S   (repeat)
+    # ${$packet_info}{OrgNet}                           # S   (repeat)
+    # ${$packet_info}{DestNet}                          # S   (repeat)
+    my $attribute = 0;                                  # S
+    my $Cost = 0;                                       # S
+    # ${$message_ref}{DateTime}                         # a20 (this is a local())
+    # ${$message_ref}{To}                               # a? (36 max)
+    # ${$message_ref}{From}                             # a? (36 max)
+    # ${$message_ref}{Subj}                             # a? (72 max)
 
-    #"AREA: "                           		# c6          }
-    # ${$packet_info}{Area}				# a? (max?)   } all this is actually part
-    #possible kludges go here. 0x01<TAG>0x0D          	} of the TEXT postions
-    #TEXT goes here. (ends with 2 0x0D's ???)        	}
+    #"AREA: "                                           # c6          }
+    # ${$packet_info}{Area}                             # a? (max?)   } all this is actually part
+    #possible kludges go here. 0x01<TAG>0x0D            } of the TEXT postions
+    #TEXT goes here. (ends with 2 0x0D's ???)           }
 
     # ${$packet_info}{TearLine}
     my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.1)$EOL";
@@ -335,51 +349,55 @@ sub write_ftn_packet {
     #while ( @{$messages} > 0) {
     #while ( @{$messages} ) {
 
-	#$message_ref = pop(@{$messages});			# get next message hash reference
-         
-	# get text body, translate LFs to CRs
-         
-	@lines = ${$message_ref}{Body};
-	grep(s/\n/\r/,@lines);
-         
-	# kill leading blank lines
-         
-	shift(@lines) while ($lines[0] eq "\n");
-                  
-	++$nmsgs;                           # informative only
-         
-	# write message to $PKT file
-         
-	# Write Message Header	    
-	$buffer = pack("SSSSSSSa20",
-		$packet_version,${$packet_info}{OrgNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
-		${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
-	print $PKT $buffer;
+        ## get next message hash reference
+        #$message_ref = pop(@{$messages});
 
-	print $PKT "${$message_ref}{To}\0";
-	print $PKT "${$message_ref}{From}\0";
-	print $PKT "${$message_ref}{Subj}\0";
-	print $PKT "AREA: ${$packet_info}{Area}$EOL";         # note: CR not nul
-         
-	$serialno = unpack("%16C*",join('',@lines));
-	$serialno = sprintf("%lx",$serialno + time);
-	print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.${$packet_info}{OrgPoint} $serialno$EOL";
-         
-	print $PKT @lines; 
-	print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
-         
-	@lines = ();                        # all done with array (frees mem?)
-          
+        # get text body, translate LFs to CRs
+
+        @lines = ${$message_ref}{Body};
+        grep(s/\n/\r/,@lines);
+
+        # kill leading blank lines
+
+        shift(@lines) while ($lines[0] eq "\n");
+
+        # informative only
+        ++$nmsgs;
+
+        # write message to $PKT file
+
+        # Write Message Header	
+        $buffer = pack("SSSSSSSa20",
+                $packet_version,${$packet_info}{OrgNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
+                ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
+        print $PKT $buffer;
+
+        print $PKT "${$message_ref}{To}\0";
+        print $PKT "${$message_ref}{From}\0";
+        print $PKT "${$message_ref}{Subj}\0";
+        print $PKT "AREA: ${$packet_info}{Area}$EOL";         # note: CR not nul
+
+        $serialno = unpack("%16C*",join('',@lines));
+        $serialno = sprintf("%lx",$serialno + time);
+        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+
+        print $PKT @lines; 
+        print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
+
+        # all done with array (frees mem?)
+        @lines = ();
+
     }
-    
-    print $PKT "\0\0";                      # indicates no more messages
+
+    # indicates no more messages
+    print $PKT "\0\0";
 
     close($PKT);
 
     return 0;
 }
 
-__END__ 
+__END__
 
 =head1 EXAMPLES
 
@@ -420,4 +438,3 @@ under the same terms as Perl itself.
 =cut
 
 1;
-
