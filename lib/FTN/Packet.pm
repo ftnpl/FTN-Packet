@@ -173,7 +173,7 @@ sub read_ftn_packet {
         # get message body
         $message_body = "";	#  ensure that it starts empty
 
-        foreach $s (@lines) {
+        foreach my $s (@lines) {
             $s =~ tr/\0-\037/\040-\100/;
             $s =~ s/\s+$//;
             $s=~tr/^\*/ /;
@@ -186,13 +186,13 @@ sub read_ftn_packet {
         # get control info
         my $control_info = "";	#  ensure that it starts empty 
         $control_info .= "$seen_by\n" if ($seen_by);
-        foreach $s (@kludges) {
-            $s =~ s/^\001//;
+        foreach my $c (@kludges) {
+            $c =~ s/^\001//;
 
             # If kludge starts with "MSGID:", stick that in a special 
             # variable. 
-            if ( substr($s, 0, 6) eq "MSGID:" ) {
-                $message_id = substr($s, 7);
+            if ( substr($c, 0, 6) eq "MSGID:" ) {
+                $message_id = substr($c, 7);
             }
 
             $control_info .= "$s\n";
@@ -345,7 +345,7 @@ sub write_ftn_packet {
     syswrite($PKT,$buffer,58);
 
     # needs to iterate over the array of hashes representing the messages
-    foreach $message_ref ( @{$messages} ) {
+    foreach my $message_ref ( @{$messages} ) {
     #while ( @{$messages} > 0) {
     #while ( @{$messages} ) {
 
