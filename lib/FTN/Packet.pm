@@ -327,7 +327,7 @@ sub write_ftn_packet {
     #			the original above was 1900 instead of 2000
     $packet_file = sprintf("%s/%02d%02d%02d%02d.pkt",$OutDir,$day,$hour,$minutes,$seconds);
 
-    open($PKT,">$packet_file") || die;
+    open( $PKT, q{>}, "$packet_file" ) || die;
 
     binmode{$PKT);
 
