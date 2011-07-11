@@ -38,8 +38,7 @@ write_ftn_packet().
 # Do not simply export all your public functions/methods/constants.
 @EXPORT = qw(
 );
-@EXPORT_OK = qw( &read_ftn_packet(), &write_ftn_packet()
-	
+@EXPORT_OK = qw( &read_ftn_packet &write_ftn_packet
 );
 
 =head1 FUNCTIONS
