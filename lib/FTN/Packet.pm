@@ -13,7 +13,7 @@ VERSION 0.11
 
 =cut
 
-$VERSION = '0.11';
+our $VERSION = '0.11';
 
 =head1 DESCRIPTION
 
@@ -256,7 +256,7 @@ sub write_ftn_packet {
 
     my ($OutDir, $packet_info, $messages) = @_;
 
-    my ($packet_file, @lines, $serialno, $buffer, $i, $k, $message_ref);
+    my ($packet_file, $PKT, @lines, $serialno, $buffer, $nmsgs, $i, $k, $message_ref);
 
     my $EOL = "\n\r";
 
