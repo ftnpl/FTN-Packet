@@ -406,6 +406,44 @@ __END__
 
 Robert James Clay, jame@rocasa.us
 
+=head1 BUGS
+
+Please report any bugs or feature requests via the web interface at
+L<https://github.com/jame/ftn-packet/issues>. I will be notified,
+and then you'll automatically be notified of progress on your bug
+as I make changes.
+
+Note that you can also report any bugs or feature requests to
+C<bug-ftn-packet at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=FTN-Packet>;
+however, the FTN-Packet Issue tracker is preferred.
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc FTN::Packet
+
+You can also look for information at:
+
+=over 4
+
+=item * FTN::Packet issue tracker
+
+L<https://github.com/jame/ftn-packet/issues>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=FTN-Packet>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/FTN-Packet/>
+
+=back
+
+
+
 =head1 ACKNOWLEDGEMENTS
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
@@ -414,12 +452,6 @@ Russ Johnson L<mailto:airneil@users.sf.net> and Robert James Clay L<mailto:jame@
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc FTN::Packet
 
 =head1 SEE ALSO
 
