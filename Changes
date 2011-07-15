@@ -1,6 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
-0.13  ??? Jul ?? 2011  
+0.13  Fri Jul 15 2011  
+    - Correct numbers in test scripts.
+    - Updated the FTN::Packet TODO file.
+    - Reorganize documentation in lib/FTN/Packet.pm: moved the ACKNOWLEDGEMENT
+      section, added a BUGS section, and added to the SUPPORT section.
 
 0.12  Mon Jul 11 2011 17:11 
     - Correct line for TODO file in MANIFEST.
