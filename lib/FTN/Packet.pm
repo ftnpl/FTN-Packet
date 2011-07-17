@@ -409,7 +409,7 @@ Robert James Clay, jame@rocasa.us
 =head1 BUGS
 
 Please report any bugs or feature requests via the web interface at
-L<https://github.com/jame/ftn-packet/issues>. I will be notified,
+L<https://github.com/jame/FTN-Packet/issues>. I will be notified,
 and then you'll automatically be notified of progress on your bug
 as I make changes.
 
