@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.13
+VERSION 0.14
 
 =cut
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 =head1 DESCRIPTION
 
@@ -409,7 +409,7 @@ Robert James Clay, jame@rocasa.us
 =head1 BUGS
 
 Please report any bugs or feature requests via the web interface at
-L<https://github.com/jame/ftn-packet/issues>. I will be notified,
+L<https://github.com/jame/FTN-Packet/issues>. I will be notified,
 and then you'll automatically be notified of progress on your bug
 as I make changes.
 
