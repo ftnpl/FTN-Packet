@@ -1,15 +1,15 @@
 Revision history for Perl extension FTN::Packet
 
-0.14  dow mmm dd 2011  
-    - 
+0.14  Sun Jul 17 2011
+    - Correct GitHub repository name in Packet.pm.
 
-0.13  Fri Jul 15 2011  
+0.13  Fri Jul 15 2011
     - Correct numbers in test scripts.
     - Updated the FTN::Packet TODO file.
     - Reorganize documentation in lib/FTN/Packet.pm: moved the ACKNOWLEDGEMENT
       section, added a BUGS section, and added to the SUPPORT section.
 
-0.12  Mon Jul 11 2011 17:11 
+0.12  Mon Jul 11 2011 17:11
     - Correct line for TODO file in MANIFEST.
     - Correct grep line number 355 in Packet.pm.
     - Set scope for ISA, EXPORT, and EXPORT_OK in Packet.pm.
@@ -40,7 +40,7 @@ Revision history for Perl extension FTN::Packet
     - Change the Author email being used to jame@rocasa.us.
     - Updated Makefile.pl;  adding items for AUTHOR, ABSTRACT_FROM, LICENSE,
       dist, & clean.
-    
+
 0.08  Sun Dec 21 2008
     - Do some clean up of usage and naming of variables, as well as to the
       documentation.
@@ -65,7 +65,7 @@ Revision history for Perl extension FTN::Packet
 0.03  Wed Dec 26 2001
     - in README;  added installation info & included '2002' in copyright
       statement.
-    
+
 0.02  Sun Dec 16 2001
     - Corrected NAME reference in MakeFile.PL.
     - Added EXPORT_OK reference in Packet.pm
