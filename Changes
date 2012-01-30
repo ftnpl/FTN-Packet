@@ -1,5 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
+0.15  dow mmm dd 2012
+    - Start development for v0.15
+
 0.14  Sun Jul 17 2011
     - Correct GitHub repository name in Packet.pm.
 
