@@ -1,7 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
-0.15  dow mmm dd 2012
-    - Start development for v0.15
+0.15  Sun Jan 29 2012
+    - Change documented Issue Tracker to SourceForge Project.
+    - Update Copyright years for Robert James Clay to include 2012.
 
 0.14  Sun Jul 17 2011
     - Correct GitHub repository name in Packet.pm.
