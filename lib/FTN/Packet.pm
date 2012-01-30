@@ -430,7 +430,7 @@ You can also look for information at:
 
 =item * FTN::Packet issue tracker
 
-L<https://github.com/jame/ftn-packet/issues>
+L<http://sourceforge.net/p/ftnpl/ftn-packet/tickets/>
 
 =item * RT: CPAN's request tracker
 
