@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.14
+VERSION 0.15
 
 =cut
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 =head1 DESCRIPTION
 
@@ -430,7 +430,7 @@ You can also look for information at:
 
 =item * FTN::Packet issue tracker
 
-L<https://github.com/jame/ftn-packet/issues>
+L<http://sourceforge.net/p/ftnpl/ftn-packet/tickets/>
 
 =item * RT: CPAN's request tracker
 
@@ -459,7 +459,7 @@ scripts, also at the SourceForge project.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2011 Robert James Clay, all rights reserved.
+Copyright 2001-2012 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
