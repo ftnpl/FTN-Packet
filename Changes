@@ -1,7 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
-0.16  dow mmm dd 2012
-    - Start development for v0.16
+0.16  Mon Sep  3 2012 07:45
+    - Use 'croak' instead of 'die' in the file open line of write_ftn_packet.
+    - Correct issue tracker URL in the BUGS pod section of Packet.pm.
 
 0.15  Sun Jan 29 2012
     - Change documented Issue Tracker to SourceForge Project.
