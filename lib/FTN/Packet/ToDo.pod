@@ -1,0 +1,103 @@
+=head1 FTN::Packet ToDo
+
+=head2 General
+
+Run perltidy on Packet.pm
+
+Add t/*.t scripts to write then read a simple packet file.
+
+The $Origin, $seen_by, & $Path variables at Lines 311-313 in Packet.pm
+Should that creation of an origin line really be in the packet file creation?
+Or is that something that should be getting created in the message body and
+getting passed that way?  It also hard codes "1" as the origin point number,
+when that should be OrgPoint. Same for the $seen_by and $Path variables; the
+are part of the messages, but shouldn't they already be in the message bodies
+being passed to the write_ftn_packet function?
+
+The following warnings come up when attempting to use the module:
+Replacement list is longer than search list at /usr/local/share/perl/5.14.2/FTN/Packet.pm line 111.
+Replacement list is longer than search list at /usr/local/share/perl/5.14.2/FTN/Packet.pm line 113.
+Replacement list is longer than search list at /usr/local/share/perl/5.14.2/FTN/Packet.pm line 114.
+Replacement list is longer than search list at /usr/local/share/perl/5.14.2/FTN/Packet.pm line 175.
+bioperl-live apparently had a similar warning and apparently solved by changeing how the correction
+was being done instead of using tr//, like this:
+https://github.com/bioperl/bioperl-live/commit/cbae795594c00215da0bae993d65e9a9dc224e92
+Reference also 3116 there, where it is noted that the warning my because the length of the strings
+are changing. They had a simplier issue and solved it by making the changes using a hash.
+
+Don't really need t/boilerplate.t test script.
+
+Add ZIPFLAGS to dist parameters in Makefile.PL.
+
+Use the same key names for the message hash for in the read and write packet functions, so as to
+avoid confusion; match them up as necessary to the names of the fields in the ftsc document.
+
+Clean up indentation/whitespace in Makefile.PL.
+
+In order to provide Object Oriented functions for writing an FTN Packet, merge
+code from FTN::Pkt.
+
+Fix the possible ftsc date related issues in the course of creating and
+using an ftsc_date function.
+
+Also add other functions as necessary: one for generating a serial number,
+one for generating a name for a standard packet file, one for generating an
+ftsc standard date.
+
+Add reference to FTN Packet FTSC documentation and/or to the FTSC web site.
+
+Clean up indentation/whitespace in README.
+
+Reorganize the functions? So that instead of a read and a write packet
+function; there are functions to open and close the packet file being
+read or written, reading or writing the packet header are separate
+functions, and then reading or writing the messsages to or from a packet
+file are also separate functions?
+
+
+=head2 write_ftn_packet()
+
+When doing, for instance, two messages: two messages are making it into
+the packets but they're both the text of the second message.
+
+Also the serial number for the MSGID is coming up as the same for both.
+When code a better way of getting a 8 char serial number to use, add it
+as a function to the module?
+
+The writeup and variable usages for the packet format per FTS-0001 could
+be rewritten to more closely match the current documentation, esp. the
+listed order.
+
+Change the name of the appropriate fields in the packet related hashes to
+being named after how they are named in the FTS-0001 documentation.
+
+
+=head2 read_ftn_packet()
+
+Change the name of the appropriate fields in the packet related hashes to
+being named after how they are named in the fts-0001 documentation.
+
+The zone number information is not being pulled from what is available in the
+packet; needed to set the from_node & to_node variables instead of assuming
+zone 1. It is in the packet header (being skipped in the current code) instead
+of in the message header. Or could use the zone number from the message if it
+available.
+
+
+=head1 SEE ALSO
+
+ L<FTN::Packet>, L<FTN::Packet::Examples>
+
+
+=head1 AUTHOR
+
+Robert James Clay, C<< <jame at rocasa.us> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2012 Robert James Clay, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut

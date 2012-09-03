@@ -2,8 +2,8 @@ Changes
 MANIFEST
 Makefile.PL
 lib/FTN/Packet.pm
+lib/FTN/Packet/ToDo.pod
 README
-doc/TODO
 t/00-load.t
 t/pod-coverage.t
 t/pod.t
