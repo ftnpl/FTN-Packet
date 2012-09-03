@@ -1,5 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
+0.17  Mon Sep  3 2012 16:19
+    - Rewrite the doc/TODO file using POD file named lib/FTN/Packet/ToDo.pod.
+    - Add the -or9 ZIPFLAGS parameter and clean up whitespace in Makefile.PL.
+    - Rewrite the file open line in the write_ftn_packet function of Packet.pm.
+
 0.16  Mon Sep  3 2012 07:45
     - Use 'croak' instead of 'die' in the file open line of write_ftn_packet.
     - Correct issue tracker URL in the BUGS pod section of Packet.pm.

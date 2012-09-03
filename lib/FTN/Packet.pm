@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.16
+VERSION 0.17
 
 =cut
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 =head1 DESCRIPTION
 
@@ -324,7 +324,7 @@ sub write_ftn_packet {
 
     $packet_file = sprintf("%s/%02d%02d%02d%02d.pkt",$OutDir,$day,$hour,$minutes,$seconds);
 
-    open( $PKT, q{>}, "$packet_file" ) || croak;
+    open( $PKT, q{>}, "$packet_file" ) or croak('Cannot open FTN packet file for writing.');
 
     binmode($PKT);
 
@@ -455,7 +455,7 @@ scripts, also at the SourceForge project.
 
 =head1 SEE ALSO
 
- L<perl(1)>
+ L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>
 
 =head1 COPYRIGHT & LICENSE
 
