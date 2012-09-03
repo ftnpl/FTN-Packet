@@ -455,7 +455,7 @@ scripts, also at the SourceForge project.
 
 =head1 SEE ALSO
 
- L<perl(1)>
+ L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>
 
 =head1 COPYRIGHT & LICENSE
 
