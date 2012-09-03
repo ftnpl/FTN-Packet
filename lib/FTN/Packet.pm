@@ -9,11 +9,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.15
+VERSION 0.16
 
 =cut
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 =head1 DESCRIPTION
 
