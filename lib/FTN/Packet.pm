@@ -73,9 +73,12 @@ sub read_ftn_packet {
     # Returns an array of hash references
 
     my ($packet_version,$origin_node,$destination_node,$origin_net,$destination_net,$attribute,$cost,$buffer);
-    my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges,
+    my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges, $PKT,
         $from_node, $to_node, @messages, $message_body, $message_id, $reply_id, $origin,
         $mailer, $seen_by, $i, $k);
+
+    open( $PKT, q{<}, $packet_file ) or croak("Problem opening packet file: $packet_file");
+    binmode($PKT);
 
     # Ignore packet header
     read($PKT,$buffer,58);
