@@ -2,6 +2,7 @@ package FTN::Packet;
 
 use strict;
 use warnings;
+use Carp qw( croak );
 
 =head1 NAME
 
@@ -9,11 +10,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.17
+VERSION 0.18
 
 =cut
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 =head1 DESCRIPTION
 
@@ -44,22 +45,30 @@ our @EXPORT_OK = qw( &read_ftn_packet &write_ftn_packet
 
 =head2 read_ftn_packet
 
-Syntax:  $messages = read_ftn_packet(*PKT);
+Syntax:  $messages = read_ftn_packet($pkt_file);
 
-Read a Fidonet/FTN packet.  Returns the messages in the packet as a reference
-to an array of hash references, which can be read as follows:
+Read the messages in a Fidonet/FTN packet. It is passed the name and path of a
+Fidonet/FTN packet file. Returns the messages in the packet as a reference to an
+array of hashes, which can be read as follows:
 
-    $message_ref = pop(@{$messages});
-    $msg_area = ${$message_ref}->('area');
-    $msg_date = ${$message_ref}->('ftscdate');
-    $msg_tonode = ${$message_ref}->('tonode');
-    $msg_from = ${$message_ref}->('from');
-    $msg_body = ${$message_ref}->('to');
-    $msg_subj = ${$message_ref}->('subj');
-    $msg_msgid = ${$message_ref}->('msgid');
-    $msg_replyid = ${$message_ref}->('replyid');
-    $msg_body = ${$message_ref}->('body');
-    $msg_ctrl = ${$message_ref}->('ctrlinfo');
+    for $i ( 0 .. $#{$messages} ) {
+
+        print "On message $i";
+
+        $msg_area = ${$messages}[i]{area};
+        $msg_date = ${$messages}[i]{ftscdate};
+        $msg_tonode = ${$messages}[i]{tonode};
+        $msg_from = ${$messages}[i]{from};
+        $msg_to = ${$messages}[i]{to};
+        $msg_subj = ${$messages}[i]{subj};
+        $msg_msgid = ${$messages}[i]{msgid};
+        $msg_replyid = ${$messages}[i]{replyid};
+        $msg_body = ${$messages}[i]{body};
+        $msg_ctrl = ${$messages}[i]{ctrlinfo};
+
+        # Processing of the contents of the message.
+
+    }
 
 =cut
 
@@ -68,14 +77,16 @@ to an array of hash references, which can be read as follows:
 ###############################################
 sub read_ftn_packet {
 
-    my ($PKT) = @_;
-    # "$PKT" is a file pointer to the packet file being read
-    # Returns an array of hash references
+    my ($packet_file) = @_;
 
     my ($packet_version,$origin_node,$destination_node,$origin_net,$destination_net,$attribute,$cost,$buffer);
-    my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges,
+    my ($separator, $s, $date_time, $to, $from, $subject, $area, @lines, @kludges, $PKT,
         $from_node, $to_node, @messages, $message_body, $message_id, $reply_id, $origin,
         $mailer, $seen_by, $i, $k);
+
+    # "$PKT" is a file pointer to the packet file being read
+    open( $PKT, q{<}, $packet_file ) or croak("Problem opening packet file: $packet_file");
+    binmode($PKT);
 
     # Ignore packet header
     read($PKT,$buffer,58);
@@ -193,7 +204,7 @@ sub read_ftn_packet {
                 $message_id = substr($c, 7);
             }
 
-            $control_info .= "$s\n";
+            $control_info .= "$c\n";
         }
 
         if ( ! $message_id) {
@@ -223,8 +234,8 @@ sub read_ftn_packet {
             to => $to,
             subj => $subject,
 
-            msgid => $message_id,    
-            replyid => $reply_id,  
+            msgid => $message_id,
+            replyid => $reply_id,
 
             body => $message_body,
 
