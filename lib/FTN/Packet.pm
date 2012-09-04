@@ -68,7 +68,7 @@ to an array of hash references, which can be read as follows:
 ###############################################
 sub read_ftn_packet {
 
-    my ($PKT) = @_;
+    my ($packet_file) = @_;
     # "$PKT" is a file pointer to the packet file being read
     # Returns an array of hash references
 
