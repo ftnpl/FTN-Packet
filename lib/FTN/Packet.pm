@@ -197,7 +197,7 @@ sub read_ftn_packet {
                 $message_id = substr($c, 7);
             }
 
-            $control_info .= "$s\n";
+            $control_info .= "$c\n";
         }
 
         if ( ! $message_id) {
