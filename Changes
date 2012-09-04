@@ -1,7 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
-0.18  dow mmm dd 2012
-    - Start development for v0.18
+0.18  Tue Sep  4 2012
+    - Add a 'use Carp' line to the Packet.pm file.
+    - Update the documentation for the read_ftn_packet function.
+    - Change how the read_ftn_packet function in Packet.pm is called.
+    - Correct the variable $s to $c in line 187 of the Packet.pm file.
 
 0.17  Mon Sep  3 2012 16:19
     - Rewrite the doc/TODO file using POD file named lib/FTN/Packet/ToDo.pod.
