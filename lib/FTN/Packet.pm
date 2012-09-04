@@ -2,6 +2,7 @@ package FTN::Packet;
 
 use strict;
 use warnings;
+use Carp qw( croak );
 
 =head1 NAME
 
