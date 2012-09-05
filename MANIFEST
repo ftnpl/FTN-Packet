@@ -2,6 +2,7 @@ Changes
 MANIFEST
 Makefile.PL
 lib/FTN/Packet.pm
+lib/FTN/Packet/Examples.pod
 lib/FTN/Packet/ToDo.pod
 README
 t/46926700.pkt
