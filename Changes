@@ -1,7 +1,11 @@
 Revision history for Perl extension FTN::Packet
 
-0.20  Wed Sep  5 2012 hh:mm
-    - Start development of v0.20
+0.20  Wed Sep  5 2012 15:50
+    - Already using @EXPORT_OK so do not need @EXPORT in Packet.pm.
+    - Update the MANIFEST file with the names of the new test scripts.
+    - Add FTN::Packet::Examples as the file lib/FTN/Packet/Examples.pod
+    - Correct the tr// replacement range for masking control characters from
+      040-100 to 040-077.
 
 0.19  Wed Sep  5 2012 12:05
     - Add the file t/46926700.pkt for Netmail message related test scripts and
