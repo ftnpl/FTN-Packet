@@ -10,11 +10,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.19
+VERSION 0.20
 
 =cut
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 =head1 DESCRIPTION
 
@@ -36,8 +36,6 @@ our @ISA = qw(Exporter AutoLoader);
 # Items to export into callers namespace by default. Note: do not export
 # names by default without a very good reason. Use EXPORT_OK instead.
 # Do not simply export all your public functions/methods/constants.
-our @EXPORT = qw(
-);
 our @EXPORT_OK = qw( &read_ftn_packet &write_ftn_packet
 );
 
@@ -119,10 +117,10 @@ sub read_ftn_packet {
         $subject = <$PKT>;
 
         $to   =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
-        $to   =~ tr/\0-\037/\040-\100/;     # mask control characters
+        $to   =~ tr/\0-\037/\040-\077/;     # mask control characters
         $from =~ tr/\200-\377/\0-\177/;     # mask hi-bit characters
-        $from =~ tr/\0-\037/\040-\100/;     # mask control characters
-        $subject =~ tr/\0-\037/\040-\100/;     # mask control characters
+        $from =~ tr/\0-\037/\040-\077/;     # mask control characters
+        $subject =~ tr/\0-\037/\040-\077/;     # mask control characters
 
         $s = <$PKT>;
         local $/ = $separator;
@@ -183,7 +181,7 @@ sub read_ftn_packet {
         $message_body = "";
 
         foreach my $s (@lines) {
-            $s =~ tr/\0-\037/\040-\100/;
+            $s =~ tr/\0-\037/\040-\077/;     # mask control characters
             $s =~ s/\s+$//;
             $s=~tr/^\*/ /;
             $message_body .= "$s\n";
