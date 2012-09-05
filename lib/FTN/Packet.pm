@@ -183,7 +183,7 @@ sub read_ftn_packet {
         $message_body = "";
 
         foreach my $s (@lines) {
-            $s =~ tr/\0-\037/\040-\077/;
+            $s =~ tr/\0-\037/\040-\077/;     # mask control characters
             $s =~ s/\s+$//;
             $s=~tr/^\*/ /;
             $message_body .= "$s\n";
