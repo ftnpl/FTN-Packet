@@ -1,5 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
+0.19  dow mmm dd 2012
+    - Start development for v0.19
+
 0.18  Tue Sep  4 2012
     - Add a 'use Carp' line to the Packet.pm file.
     - Update the documentation for the read_ftn_packet function.
