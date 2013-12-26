@@ -281,7 +281,7 @@ sub write_ftn_packet {
     my $packet_version = 2;                                 # S   Type 2 packet
     # ${$packet_info}{OrgNet}                               # S
     # ${$packet_info}{DestNet}                              # S
-    my $ProdCode = 0x100;                                   # S   product code: ?
+    my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
     # ${$packet_info}{OrgZone}                              # S
     # ${$packet_info}{DestZone}                             # S
