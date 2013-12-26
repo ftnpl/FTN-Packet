@@ -1,5 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
+0.21  Thu Dec 26 2013
+    - Add FTSC Product codes file reference to the lib/FTN/Packet.pm file.
+    - Add FTN Packet FTSC documentation reference to lib/FTN/Packet.pm file.
+    - FTN::Packet FTSC Product Code is 0x1CFF; set that in lib/FTN/Packet.pm.
+
 0.20  Wed Sep  5 2012 15:50
     - Already using @EXPORT_OK so do not need @EXPORT in Packet.pm.
     - Update the MANIFEST file with the names of the new test scripts.
