@@ -464,8 +464,8 @@ scripts, also at the SourceForge project.
 
 =head1 SEE ALSO
 
- L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>,
- L<FTS-0001.16|http://www.ftsc.org/docs/fts-0001.016>,
+ L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>, L<FTSCPROD.016>,
+ L<FTS-0001.016|http://www.ftsc.org/docs/fts-0001.016>
 
 
 =head1 COPYRIGHT & LICENSE
