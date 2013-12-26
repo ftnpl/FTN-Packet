@@ -2,8 +2,11 @@
 
 =head2 General
 
-Add reference to FTN Packet FTSC documentation and/or to the FTSC web site.
-(http://www.ftsc.org/docs/fts-0001.016)
+As the packet file specification was originated on x86 systems, which are
+little endian, problems come up with reading/writing such files on big-endian
+systems. Use the explicit < (little endian) modifer for the pack/unpack
+functions?  Or change which format codes are being used? Reference also the
+Byte-order-modifiers section in perlpacktut.
 
 Use the same key names for the message hash for in the read and write packet
 functions, so as to avoid confusion; match them up as necessary to the names
@@ -28,7 +31,7 @@ file, one for generating an ftsc standard date.
 Clean up indentation/whitespace in README.
 
 In order to provide Object Oriented functions for writing an FTN Packet,
-start with a merge of FTN::Pkt into FTN::Packet?
+start with a merge of FTN::Pkt into FTN::Packet.
 
 
 =head2 write_ftn_packet()
@@ -102,7 +105,7 @@ Robert James Clay, C<< <jame at rocasa.us> >>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2012 Robert James Clay, all rights reserved.
+Copyright 2013 Robert James Clay, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
