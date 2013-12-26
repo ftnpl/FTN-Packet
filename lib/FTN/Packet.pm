@@ -10,11 +10,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.20
+VERSION 0.21
 
 =cut
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 =head1 DESCRIPTION
 
@@ -281,7 +281,7 @@ sub write_ftn_packet {
     my $packet_version = 2;                                 # S   Type 2 packet
     # ${$packet_info}{OrgNet}                               # S
     # ${$packet_info}{DestNet}                              # S
-    my $ProdCode = 0x100;                                   # S   product code: ?
+    my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
     # ${$packet_info}{OrgZone}                              # S
     # ${$packet_info}{DestZone}                             # S
@@ -464,11 +464,13 @@ scripts, also at the SourceForge project.
 
 =head1 SEE ALSO
 
- L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>
+ L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>, L<FTSCPROD.016>,
+ L<FTS-0001.016|http://www.ftsc.org/docs/fts-0001.016>
+
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2012 Robert James Clay, all rights reserved.
+Copyright 2001-2013 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
