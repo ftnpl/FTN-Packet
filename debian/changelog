@@ -1,5 +1,5 @@
-libftn-packet-perl (0.21-1) unstable; urgency=low
+libftn-packet-perl (0.21-1~1) UNRELEASED; urgency=low
 
-  * Initial Release.
+  * Initial Release of packaging for FTN::Packet.
 
- -- Robert James Clay <jame@rocasa.us>  Thu, 26 Dec 2013 05:00:41 -0500
+ -- Robert James Clay <jame@rocasa.us>  Thu, 26 Dec 2013 05:44:41 -0500
