@@ -1,0 +1,17 @@
+Source: libftn-packet-perl
+Section: perl
+Priority: optional
+Maintainer: Robert James Clay <jame@rocasa.us>
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: perl
+Standards-Version: 3.9.2
+Homepage: http://search.cpan.org/dist/FTN-Packet/
+
+Package: libftn-packet-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Reading or writing Fidonet Technology Networks (FTN) packets.
+ FTN::Packet is a Perl extension for reading or writing Fidonet Technology
+ Networks (FTN) packets.
+ .
+ This description was automagically extracted from the module by dh-make-perl.
