@@ -3,7 +3,7 @@ Section: perl
 Priority: optional
 Maintainer: Robert James Clay <jame@rocasa.us>
 Build-Depends: debhelper (>= 8)
-Build-Depends-Indep: perl
+Build-Depends-Indep: perl, libtest-pod-perl, libtest-pod-coverage-perl
 Standards-Version: 3.9.3
 Homepage: http://search.cpan.org/dist/FTN-Packet/
 
