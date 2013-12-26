@@ -12,6 +12,4 @@ Architecture: all
 Depends: ${misc:Depends}, ${perl:Depends}
 Description: Reading or writing Fidonet Technology Networks (FTN) packets.
  FTN::Packet is a Perl extension for reading or writing Fidonet Technology
- Networks (FTN) packets.
- .
- This description was automagically extracted from the module by dh-make-perl.
+ Networks (FTN) packet filess.
