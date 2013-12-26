@@ -468,7 +468,7 @@ scripts, also at the SourceForge project.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2012 Robert James Clay, all rights reserved.
+Copyright 2001-2013 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
