@@ -1,5 +1,5 @@
-libftn-packet-perl (0.21-1~1) UNRELEASED; urgency=low
+libftn-packet-perl (0.21-0precise1) precise; urgency=low
 
-  * Initial Release of packaging for FTN::Packet.
+  * Initial Release of packaging for FTN::Packet for Ubuntu v12.04.
 
- -- Robert James Clay <jame@rocasa.us>  Thu, 26 Dec 2013 05:44:41 -0500
+ -- Robert James Clay <jame@rocasa.us>  Thu, 26 Dec 2013 06:54:15 -0500
