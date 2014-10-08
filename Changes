@@ -1,5 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
+0.22  Wed Oct  8 2014
+    - v 0.22 develoment
+
 0.21  Thu Dec 26 2013
     - Add FTSC Product codes file reference to the lib/FTN/Packet.pm file.
     - Add FTN Packet FTSC documentation reference to lib/FTN/Packet.pm file.
