@@ -1,7 +1,10 @@
 Revision history for Perl extension FTN::Packet
 
 0.22  Wed Oct  8 2014
-    - v 0.22 develoment
+    - Add initial version of the MANIFEST.SKIP file.
+    . Add code repository information to POD in lib/FTN/Database.pm.
+    - Add code repository information to META section in Makefile.PL.
+    - Add initial version of '.travis.yml' for use at GitHub mirror.
 
 0.21  Thu Dec 26 2013
     - Add FTSC Product codes file reference to the lib/FTN/Packet.pm file.
