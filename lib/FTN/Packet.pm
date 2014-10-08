@@ -10,11 +10,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.21
+VERSION 0.22
 
 =cut
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 =head1 DESCRIPTION
 
@@ -451,8 +451,6 @@ L<http://search.cpan.org/dist/FTN-Packet/>
 
 =back
 
-
-
 =head1 ACKNOWLEDGEMENTS
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
@@ -462,6 +460,11 @@ available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
 
+=head1 REPOSITORIES
+
+L<http://sourceforge.net/p/ftnpl/ftn-packet/code>
+L<https://github.com/ftnpl/FTN-Packet>
+
 =head1 SEE ALSO
 
  L<FTN::Packet::Examples>, L<FTN::Packet::ToDo>, L<FTSCPROD.016>,
@@ -470,7 +473,7 @@ scripts, also at the SourceForge project.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2001-2013 Robert James Clay, all rights reserved.
+Copyright 2001-2014 Robert James Clay, all rights reserved.
 Copyright 2001-2003 Russ Johnson, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it

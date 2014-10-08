@@ -10,11 +10,11 @@ FTN::Packet::Examples - Examples of the usage of FTN::Packet
 
 =head1 VERSION
 
-VERSION 0.20
+VERSION 0.22
 
 =cut
 
-our $VERSION = '0.20';
+our $VERSION = '0.22';
 
 =head1 DESCRIPTION
 
