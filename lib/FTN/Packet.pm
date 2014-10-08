@@ -451,8 +451,6 @@ L<http://search.cpan.org/dist/FTN-Packet/>
 
 =back
 
-
-
 =head1 ACKNOWLEDGEMENTS
 
 Code for the read_ftn_packet function was initially derived from the newmsgs subroutine
@@ -461,6 +459,11 @@ Russ Johnson L<mailto:airneil@users.sf.net> and Robert James Clay L<mailto:jame@
 available at the L<http://ftnpl.sourceforge.net>] project site. Initial code for
 the write_ftn_packet function was derived from the bbs2pkt.pl of v0.1 of the bbsdbpl
 scripts, also at the SourceForge project.
+
+=head1 REPOSITORIES
+
+L<http://sourceforge.net/p/ftnpl/ftn-packet/code>
+L<https://github.com/ftnpl/FTN-Packet>
 
 =head1 SEE ALSO
 
