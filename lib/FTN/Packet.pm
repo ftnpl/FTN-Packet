@@ -274,7 +274,7 @@ sub write_ftn_packet {
     # PKT Header; initialized variable are constants; last comments are
     #             in pack() notation
 
-    # ${$packet_info}{OrgNode}                              # S
+    # ${$packet_info}{origNode}                              # S
     # ${$packet_info}{DestNode}                             # S
     my ($year, $month, $day, $hour, $minutes, $seconds);    # SSSSSS
     my $Baud = 0;                                           # S
@@ -300,7 +300,7 @@ sub write_ftn_packet {
     #             the MSG Header structure
 
     # $packet_version                                   # S   (repeat)
-    # ${$packet_info}{OrgNode}                          # S   (repeat)
+    # ${$packet_info}{origNode}                          # S   (repeat)
     # ${$packet_info}{DestNode}                         # S   (repeat)
     # ${$packet_info}{OrgNet}                           # S   (repeat)
     # ${$packet_info}{DestNet}                          # S   (repeat)
@@ -317,9 +317,9 @@ sub write_ftn_packet {
     #TEXT goes here. (ends with 2 0x0D's ???)           }
 
     # ${$packet_info}{TearLine}
-    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.1)$EOL";
-    my $seen_by = "SEEN-BY: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL";
-    my $Path = "\1PATH: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL\0";          # note the \0 in $Path
+    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{origNode}.1)$EOL";
+    my $seen_by = "SEEN-BY: ${$packet_info}{OrgNet}/${$packet_info}{origNode}$EOL";
+    my $Path = "\1PATH: ${$packet_info}{OrgNet}/${$packet_info}{origNode}$EOL\0";          # note the \0 in $Path
 
     # repeat MSG Headers/TEXT
 
@@ -339,7 +339,7 @@ sub write_ftn_packet {
 
     # write packet header
     $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
-               ${$packet_info}{OrgNode}, ${$packet_info}{DestNode},
+               ${$packet_info}{origNode}, ${$packet_info}{DestNode},
                $year, $month, $day, $hour, $minutes, $seconds,
                $Baud, $packet_version,
                ${$packet_info}{OrgNet}, ${$packet_info}{DestNet},
@@ -374,7 +374,7 @@ sub write_ftn_packet {
 
         # Write Message Header	
         $buffer = pack("SSSSSSSa20",
-                $packet_version,${$packet_info}{OrgNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
+                $packet_version,${$packet_info}{origNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
                 ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
         print $PKT $buffer;
 
@@ -385,7 +385,7 @@ sub write_ftn_packet {
 
         $serialno = unpack("%16C*",join('',@lines));
         $serialno = sprintf("%lx",$serialno + time);
-        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
 
         print $PKT @lines; 
         print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;

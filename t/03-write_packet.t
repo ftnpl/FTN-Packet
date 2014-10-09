@@ -22,7 +22,7 @@ BEGIN {
     my %header = (
         OrgZone => q{1},
         OrgNet => q{99},
-        OrgNode => q{100},
+        origNode => q{100},
         OrgPoint => 0,
         DestZone => q{1},
         DestNet => q{99},
