@@ -23,7 +23,7 @@ BEGIN {
         origZone => q{1},
         origNet => q{99},
         origNode => q{100},
-        OrgPoint => 0,
+        origPoint => 0,
         destZone => q{1},
         destNet => q{99},
         destNode => q{200},

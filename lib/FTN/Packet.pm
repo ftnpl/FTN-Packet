@@ -291,7 +291,7 @@ sub write_ftn_packet {
     my $CapWord2 = 1;                                       # S   byte swapped cap. word
     # ${$packet_info}{origZone}                              # S   (repeat)
     # ${$packet_info}{destZone}                             # S   (repeat)
-    # ${$packet_info}{OrgPoint}                             # S
+    # ${$packet_info}{origPoint}                             # S
     #  config file for node info?
     # ${$packet_info}{destPoint}                            # S
     my $ProdSpec = 0;                                       # L   ?
@@ -347,7 +347,7 @@ sub write_ftn_packet {
                ${$packet_info}{origZone}, ${$packet_info}{destZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
                ${$packet_info}{origZone}, ${$packet_info}{destZone},
-               ${$packet_info}{OrgPoint}, ${$packet_info}{destPoint}, $ProdSpec);
+               ${$packet_info}{origPoint}, ${$packet_info}{destPoint}, $ProdSpec);
     syswrite($PKT,$buffer,58);
 
     # needs to iterate over the array of hashes representing the messages
@@ -385,7 +385,7 @@ sub write_ftn_packet {
 
         $serialno = unpack("%16C*",join('',@lines));
         $serialno = sprintf("%lx",$serialno + time);
-        print $PKT "\1MSGID: ${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+        print $PKT "\1MSGID: ${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{origPoint} $serialno$EOL";
 
         print $PKT @lines; 
         print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
