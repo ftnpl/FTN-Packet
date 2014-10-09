@@ -279,13 +279,13 @@ sub write_ftn_packet {
     my ($year, $month, $day, $hour, $minutes, $seconds);    # SSSSSS
     my $Baud = 0;                                           # S
     my $packet_version = 2;                                 # S   Type 2 packet
-    # ${$packet_info}{OrgNet}                               # S
+    # ${$packet_info}{origNet}                               # S
     # ${$packet_info}{DestNet}                              # S
     my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
     # ${$packet_info}{OrgZone}                              # S
     # ${$packet_info}{DestZone}                             # S
-    my $AuxNet = ${$packet_info}{OrgNet};                   # S
+    my $AuxNet = ${$packet_info}{origNet};                   # S
     my $CapWord = 0x100;                                    # S   capability word: Type 2+
     my $ProdCode2 = 0;                                      # S   ?
     my $CapWord2 = 1;                                       # S   byte swapped cap. word
@@ -302,7 +302,7 @@ sub write_ftn_packet {
     # $packet_version                                   # S   (repeat)
     # ${$packet_info}{origNode}                          # S   (repeat)
     # ${$packet_info}{DestNode}                         # S   (repeat)
-    # ${$packet_info}{OrgNet}                           # S   (repeat)
+    # ${$packet_info}{origNet}                           # S   (repeat)
     # ${$packet_info}{DestNet}                          # S   (repeat)
     my $attribute = 0;                                  # S
     my $Cost = 0;                                       # S
@@ -317,9 +317,9 @@ sub write_ftn_packet {
     #TEXT goes here. (ends with 2 0x0D's ???)           }
 
     # ${$packet_info}{TearLine}
-    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{origNode}.1)$EOL";
-    my $seen_by = "SEEN-BY: ${$packet_info}{OrgNet}/${$packet_info}{origNode}$EOL";
-    my $Path = "\1PATH: ${$packet_info}{OrgNet}/${$packet_info}{origNode}$EOL\0";          # note the \0 in $Path
+    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.1)$EOL";
+    my $seen_by = "SEEN-BY: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL";
+    my $Path = "\1PATH: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL\0";          # note the \0 in $Path
 
     # repeat MSG Headers/TEXT
 
@@ -342,7 +342,7 @@ sub write_ftn_packet {
                ${$packet_info}{origNode}, ${$packet_info}{DestNode},
                $year, $month, $day, $hour, $minutes, $seconds,
                $Baud, $packet_version,
-               ${$packet_info}{OrgNet}, ${$packet_info}{DestNet},
+               ${$packet_info}{origNet}, ${$packet_info}{DestNet},
                $ProdCode, ${$packet_info}{PassWord},
                ${$packet_info}{OrgZone}, ${$packet_info}{DestZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
@@ -374,7 +374,7 @@ sub write_ftn_packet {
 
         # Write Message Header	
         $buffer = pack("SSSSSSSa20",
-                $packet_version,${$packet_info}{origNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
+                $packet_version,${$packet_info}{origNode},${$packet_info}{DestNode},${$packet_info}{origNet},
                 ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
         print $PKT $buffer;
 
@@ -385,7 +385,7 @@ sub write_ftn_packet {
 
         $serialno = unpack("%16C*",join('',@lines));
         $serialno = sprintf("%lx",$serialno + time);
-        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
 
         print $PKT @lines; 
         print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
