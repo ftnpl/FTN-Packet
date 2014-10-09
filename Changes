@@ -1,5 +1,15 @@
 Revision history for Perl extension FTN::Packet
 
+0.23  Thu Oct  9 2014
+    - Minor edit of the README file.
+    - Correct spelling of Test::Pod & Test::Pod::Coverage in .travis yml
+    - Add missing 'use' lines and variable defines to the /Examples.pod file.
+    - Do the following to better match the documentation in fts-0001.16:
+      replace 'OrgZone' with 'origZone', replace 'OrgNet' with 'origNet',
+      replace 'OrgNode' with 'origNode', replace 'OrgPoint' with 'origPoint',
+      replace 'DestZone' with 'destZone', replace 'DestNet' with 'destNet'
+      replace 'DestNode' with 'destNode', replace 'DestPoint' with 'destPoint'.
+
 0.22  Wed Oct  8 2014
     - Add initial version of the MANIFEST.SKIP file.
     . Add code repository information to POD in lib/FTN/Database.pm.

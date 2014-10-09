@@ -8,8 +8,8 @@ perl:
   - '5.20'
 before_install:
    - "cpanm Test::More"
-   - "cpanm Test::POD"
-   - "cpanm Test::POD::Coverage"
+   - "cpanm Test::Pod"
+   - "cpanm Test::Pod::Coverage"
    - "cpanm Devel::Cover::Report::Coveralls"
 
 script:

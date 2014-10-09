@@ -20,14 +20,14 @@ BEGIN {
     is( $#packet, q{1}, "Number of messages." );
 
     my %header = (
-        OrgZone => q{1},
-        OrgNet => q{99},
-        OrgNode => q{100},
-        OrgPoint => 0,
-        DestZone => q{1},
-        DestNet => q{99},
-        DestNode => q{200},
-        DestPoint => 0,
+        origZone => q{1},
+        origNet => q{99},
+        origNode => q{100},
+        origPoint => 0,
+        destZone => q{1},
+        destNet => q{99},
+        destNode => q{200},
+        destPoint => 0,
         Password => 'PassWord',
     );
 

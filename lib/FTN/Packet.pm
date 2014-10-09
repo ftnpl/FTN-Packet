@@ -10,11 +10,11 @@ FTN::Packet - Reading or writing Fidonet Technology Networks (FTN) packets.
 
 =head1 VERSION
 
-VERSION 0.22
+VERSION 0.23
 
 =cut
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 =head1 DESCRIPTION
 
@@ -274,36 +274,36 @@ sub write_ftn_packet {
     # PKT Header; initialized variable are constants; last comments are
     #             in pack() notation
 
-    # ${$packet_info}{OrgNode}                              # S
-    # ${$packet_info}{DestNode}                             # S
+    # ${$packet_info}{origNode}                              # S
+    # ${$packet_info}{destNode}                             # S
     my ($year, $month, $day, $hour, $minutes, $seconds);    # SSSSSS
     my $Baud = 0;                                           # S
     my $packet_version = 2;                                 # S   Type 2 packet
-    # ${$packet_info}{OrgNet}                               # S
-    # ${$packet_info}{DestNet}                              # S
+    # ${$packet_info}{origNet}                               # S
+    # ${$packet_info}{destNet}                              # S
     my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
-    # ${$packet_info}{OrgZone}                              # S
-    # ${$packet_info}{DestZone}                             # S
-    my $AuxNet = ${$packet_info}{OrgNet};                   # S
+    # ${$packet_info}{origZone}                              # S
+    # ${$packet_info}{destZone}                             # S
+    my $AuxNet = ${$packet_info}{origNet};                   # S
     my $CapWord = 0x100;                                    # S   capability word: Type 2+
     my $ProdCode2 = 0;                                      # S   ?
     my $CapWord2 = 1;                                       # S   byte swapped cap. word
-    # ${$packet_info}{OrgZone}                              # S   (repeat)
-    # ${$packet_info}{DestZone}                             # S   (repeat)
-    # ${$packet_info}{OrgPoint}                             # S
+    # ${$packet_info}{origZone}                              # S   (repeat)
+    # ${$packet_info}{destZone}                             # S   (repeat)
+    # ${$packet_info}{origPoint}                             # S
     #  config file for node info?
-    # ${$packet_info}{DestPoint}                            # S
+    # ${$packet_info}{destPoint}                            # S
     my $ProdSpec = 0;                                       # L   ?
 
     # MSG Header; duplicated variables are shown as comments to indicate
     #             the MSG Header structure
 
     # $packet_version                                   # S   (repeat)
-    # ${$packet_info}{OrgNode}                          # S   (repeat)
-    # ${$packet_info}{DestNode}                         # S   (repeat)
-    # ${$packet_info}{OrgNet}                           # S   (repeat)
-    # ${$packet_info}{DestNet}                          # S   (repeat)
+    # ${$packet_info}{origNode}                          # S   (repeat)
+    # ${$packet_info}{destNode}                         # S   (repeat)
+    # ${$packet_info}{origNet}                           # S   (repeat)
+    # ${$packet_info}{destNet}                          # S   (repeat)
     my $attribute = 0;                                  # S
     my $Cost = 0;                                       # S
     # ${$message_ref}{DateTime}                         # a20 (this is a local())
@@ -317,9 +317,9 @@ sub write_ftn_packet {
     #TEXT goes here. (ends with 2 0x0D's ???)           }
 
     # ${$packet_info}{TearLine}
-    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.1)$EOL";
-    my $seen_by = "SEEN-BY: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL";
-    my $Path = "\1PATH: ${$packet_info}{OrgNet}/${$packet_info}{OrgNode}$EOL\0";          # note the \0 in $Path
+    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.1)$EOL";
+    my $seen_by = "SEEN-BY: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL";
+    my $Path = "\1PATH: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL\0";          # note the \0 in $Path
 
     # repeat MSG Headers/TEXT
 
@@ -339,15 +339,15 @@ sub write_ftn_packet {
 
     # write packet header
     $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
-               ${$packet_info}{OrgNode}, ${$packet_info}{DestNode},
+               ${$packet_info}{origNode}, ${$packet_info}{destNode},
                $year, $month, $day, $hour, $minutes, $seconds,
                $Baud, $packet_version,
-               ${$packet_info}{OrgNet}, ${$packet_info}{DestNet},
+               ${$packet_info}{origNet}, ${$packet_info}{destNet},
                $ProdCode, ${$packet_info}{PassWord},
-               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone}, $AuxNet,
+               ${$packet_info}{origZone}, ${$packet_info}{destZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
-               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone},
-               ${$packet_info}{OrgPoint}, ${$packet_info}{DestPoint}, $ProdSpec);
+               ${$packet_info}{origZone}, ${$packet_info}{destZone},
+               ${$packet_info}{origPoint}, ${$packet_info}{destPoint}, $ProdSpec);
     syswrite($PKT,$buffer,58);
 
     # needs to iterate over the array of hashes representing the messages
@@ -374,8 +374,8 @@ sub write_ftn_packet {
 
         # Write Message Header	
         $buffer = pack("SSSSSSSa20",
-                $packet_version,${$packet_info}{OrgNode},${$packet_info}{DestNode},${$packet_info}{OrgNet},
-                ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
+                $packet_version,${$packet_info}{origNode},${$packet_info}{destNode},${$packet_info}{origNet},
+                ${$packet_info}{destNet},$attribute,$Cost,${$message_ref}{DateTime});
         print $PKT $buffer;
 
         print $PKT "${$message_ref}{To}\0";
@@ -385,7 +385,7 @@ sub write_ftn_packet {
 
         $serialno = unpack("%16C*",join('',@lines));
         $serialno = sprintf("%lx",$serialno + time);
-        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{OrgNet}/${$packet_info}{OrgNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+        print $PKT "\1MSGID: ${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{origPoint} $serialno$EOL";
 
         print $PKT @lines; 
         print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;

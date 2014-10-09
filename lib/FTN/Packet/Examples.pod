@@ -10,11 +10,11 @@ FTN::Packet::Examples - Examples of the usage of FTN::Packet
 
 =head1 VERSION
 
-VERSION 0.22
+VERSION 0.23
 
 =cut
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 =head1 DESCRIPTION
 
@@ -26,10 +26,17 @@ Fidonet Technology Networks (FTN) packets.
 This example reads an FTN packet file and then writes the contents of the messages
 in that packet file as text files in the directory $spool_dir/msgs.
 
- my $inbound_dir = "$spool_dir/in";
+ use warnings;
+ use strict;
+ use FTN::Packet qw(&read_ftn_packet);
+ use FTN::Log qw(&logging);
 
  my ($PKT, $pkt_file, $message, $msg_area, $msg_date, $msg_from, $msg_fromnode,
      $msg_to, $msg_tonode, $msg_subj, $msg_body, $msg_msgid, $msg_replyid, $msg_ctrlinfo, $i);
+
+ my $spool_dir = "/var/spool/ftn"
+ my $inbound_dir = "$spool_dir/in";
+ my $log_file = "$spool_dir/packet.log";
 
  opendir(INBOUND, $inbound_dir);
  my @pkt_files = grep(/.*\.pkt/i,readdir(INBOUND));
@@ -129,7 +136,7 @@ Robert James Clay, jame@rocasa.us
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2012 Robert James Clay, all rights reserved.
+Copyright 2012-2014 Robert James Clay, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
