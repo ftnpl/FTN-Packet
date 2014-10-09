@@ -27,7 +27,7 @@ BEGIN {
         destZone => q{1},
         destNet => q{99},
         destNode => q{200},
-        DestPoint => 0,
+        destPoint => 0,
         Password => 'PassWord',
     );
 

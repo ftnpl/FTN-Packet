@@ -293,7 +293,7 @@ sub write_ftn_packet {
     # ${$packet_info}{destZone}                             # S   (repeat)
     # ${$packet_info}{OrgPoint}                             # S
     #  config file for node info?
-    # ${$packet_info}{DestPoint}                            # S
+    # ${$packet_info}{destPoint}                            # S
     my $ProdSpec = 0;                                       # L   ?
 
     # MSG Header; duplicated variables are shown as comments to indicate
@@ -347,7 +347,7 @@ sub write_ftn_packet {
                ${$packet_info}{origZone}, ${$packet_info}{destZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
                ${$packet_info}{origZone}, ${$packet_info}{destZone},
-               ${$packet_info}{OrgPoint}, ${$packet_info}{DestPoint}, $ProdSpec);
+               ${$packet_info}{OrgPoint}, ${$packet_info}{destPoint}, $ProdSpec);
     syswrite($PKT,$buffer,58);
 
     # needs to iterate over the array of hashes representing the messages
