@@ -26,7 +26,7 @@ BEGIN {
         OrgPoint => 0,
         DestZone => q{1},
         DestNet => q{99},
-        DestNode => q{200},
+        destNode => q{200},
         DestPoint => 0,
         Password => 'PassWord',
     );

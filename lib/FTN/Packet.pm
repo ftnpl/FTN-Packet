@@ -275,7 +275,7 @@ sub write_ftn_packet {
     #             in pack() notation
 
     # ${$packet_info}{origNode}                              # S
-    # ${$packet_info}{DestNode}                             # S
+    # ${$packet_info}{destNode}                             # S
     my ($year, $month, $day, $hour, $minutes, $seconds);    # SSSSSS
     my $Baud = 0;                                           # S
     my $packet_version = 2;                                 # S   Type 2 packet
@@ -301,7 +301,7 @@ sub write_ftn_packet {
 
     # $packet_version                                   # S   (repeat)
     # ${$packet_info}{origNode}                          # S   (repeat)
-    # ${$packet_info}{DestNode}                         # S   (repeat)
+    # ${$packet_info}{destNode}                         # S   (repeat)
     # ${$packet_info}{origNet}                           # S   (repeat)
     # ${$packet_info}{DestNet}                          # S   (repeat)
     my $attribute = 0;                                  # S
@@ -339,7 +339,7 @@ sub write_ftn_packet {
 
     # write packet header
     $buffer = pack("SSSSSSSSSSSSSa8SSSSSSSSSSL",
-               ${$packet_info}{origNode}, ${$packet_info}{DestNode},
+               ${$packet_info}{origNode}, ${$packet_info}{destNode},
                $year, $month, $day, $hour, $minutes, $seconds,
                $Baud, $packet_version,
                ${$packet_info}{origNet}, ${$packet_info}{DestNet},
@@ -374,7 +374,7 @@ sub write_ftn_packet {
 
         # Write Message Header	
         $buffer = pack("SSSSSSSa20",
-                $packet_version,${$packet_info}{origNode},${$packet_info}{DestNode},${$packet_info}{origNet},
+                $packet_version,${$packet_info}{origNode},${$packet_info}{destNode},${$packet_info}{origNet},
                 ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
         print $PKT $buffer;
 
