@@ -280,7 +280,7 @@ sub write_ftn_packet {
     my $Baud = 0;                                           # S
     my $packet_version = 2;                                 # S   Type 2 packet
     # ${$packet_info}{origNet}                               # S
-    # ${$packet_info}{DestNet}                              # S
+    # ${$packet_info}{destNet}                              # S
     my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
     # ${$packet_info}{origZone}                              # S
@@ -303,7 +303,7 @@ sub write_ftn_packet {
     # ${$packet_info}{origNode}                          # S   (repeat)
     # ${$packet_info}{destNode}                         # S   (repeat)
     # ${$packet_info}{origNet}                           # S   (repeat)
-    # ${$packet_info}{DestNet}                          # S   (repeat)
+    # ${$packet_info}{destNet}                          # S   (repeat)
     my $attribute = 0;                                  # S
     my $Cost = 0;                                       # S
     # ${$message_ref}{DateTime}                         # a20 (this is a local())
@@ -342,7 +342,7 @@ sub write_ftn_packet {
                ${$packet_info}{origNode}, ${$packet_info}{destNode},
                $year, $month, $day, $hour, $minutes, $seconds,
                $Baud, $packet_version,
-               ${$packet_info}{origNet}, ${$packet_info}{DestNet},
+               ${$packet_info}{origNet}, ${$packet_info}{destNet},
                $ProdCode, ${$packet_info}{PassWord},
                ${$packet_info}{origZone}, ${$packet_info}{DestZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
@@ -375,7 +375,7 @@ sub write_ftn_packet {
         # Write Message Header	
         $buffer = pack("SSSSSSSa20",
                 $packet_version,${$packet_info}{origNode},${$packet_info}{destNode},${$packet_info}{origNet},
-                ${$packet_info}{DestNet},$attribute,$Cost,${$message_ref}{DateTime});
+                ${$packet_info}{destNet},$attribute,$Cost,${$message_ref}{DateTime});
         print $PKT $buffer;
 
         print $PKT "${$message_ref}{To}\0";
