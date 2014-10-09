@@ -284,13 +284,13 @@ sub write_ftn_packet {
     my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
     # ${$packet_info}{origZone}                              # S
-    # ${$packet_info}{DestZone}                             # S
+    # ${$packet_info}{destZone}                             # S
     my $AuxNet = ${$packet_info}{origNet};                   # S
     my $CapWord = 0x100;                                    # S   capability word: Type 2+
     my $ProdCode2 = 0;                                      # S   ?
     my $CapWord2 = 1;                                       # S   byte swapped cap. word
     # ${$packet_info}{origZone}                              # S   (repeat)
-    # ${$packet_info}{DestZone}                             # S   (repeat)
+    # ${$packet_info}{destZone}                             # S   (repeat)
     # ${$packet_info}{OrgPoint}                             # S
     #  config file for node info?
     # ${$packet_info}{DestPoint}                            # S
@@ -344,9 +344,9 @@ sub write_ftn_packet {
                $Baud, $packet_version,
                ${$packet_info}{origNet}, ${$packet_info}{destNet},
                $ProdCode, ${$packet_info}{PassWord},
-               ${$packet_info}{origZone}, ${$packet_info}{DestZone}, $AuxNet,
+               ${$packet_info}{origZone}, ${$packet_info}{destZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
-               ${$packet_info}{origZone}, ${$packet_info}{DestZone},
+               ${$packet_info}{origZone}, ${$packet_info}{destZone},
                ${$packet_info}{OrgPoint}, ${$packet_info}{DestPoint}, $ProdSpec);
     syswrite($PKT,$buffer,58);
 
