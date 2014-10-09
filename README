@@ -1,6 +1,6 @@
 FTN::Packet
 
-Copyright (c) 2001-2013 Robert James Clay.  All Rights Reserved.
+Copyright (c) 2001-2014 Robert James Clay.  All Rights Reserved.
 This is free software;  you can redistribute it and/or
 mnodify it under the same terms as Perl itself.
 
@@ -19,7 +19,7 @@ created directory & do the following:
    2) make
    3) make test (optional)
    4) make install
-   
+
 
 
 
