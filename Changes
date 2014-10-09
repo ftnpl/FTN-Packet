@@ -1,5 +1,8 @@
 Revision history for Perl extension FTN::Packet
 
+0.23  Wed Oct  9 2014
+    - Start development of v0.23
+
 0.22  Wed Oct  8 2014
     - Add initial version of the MANIFEST.SKIP file.
     . Add code repository information to POD in lib/FTN/Database.pm.
