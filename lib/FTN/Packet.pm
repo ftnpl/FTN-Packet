@@ -283,13 +283,13 @@ sub write_ftn_packet {
     # ${$packet_info}{DestNet}                              # S
     my $ProdCode = 0x1CFF;                                  # S   product code = 1CFF
     # ${$packet_info}{PassWord}                             # a8
-    # ${$packet_info}{OrgZone}                              # S
+    # ${$packet_info}{origZone}                              # S
     # ${$packet_info}{DestZone}                             # S
     my $AuxNet = ${$packet_info}{origNet};                   # S
     my $CapWord = 0x100;                                    # S   capability word: Type 2+
     my $ProdCode2 = 0;                                      # S   ?
     my $CapWord2 = 1;                                       # S   byte swapped cap. word
-    # ${$packet_info}{OrgZone}                              # S   (repeat)
+    # ${$packet_info}{origZone}                              # S   (repeat)
     # ${$packet_info}{DestZone}                             # S   (repeat)
     # ${$packet_info}{OrgPoint}                             # S
     #  config file for node info?
@@ -317,7 +317,7 @@ sub write_ftn_packet {
     #TEXT goes here. (ends with 2 0x0D's ???)           }
 
     # ${$packet_info}{TearLine}
-    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{OrgZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.1)$EOL";
+    my $Origin = " * Origin: ${$packet_info}{Origin}  (${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.1)$EOL";
     my $seen_by = "SEEN-BY: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL";
     my $Path = "\1PATH: ${$packet_info}{origNet}/${$packet_info}{origNode}$EOL\0";          # note the \0 in $Path
 
@@ -344,9 +344,9 @@ sub write_ftn_packet {
                $Baud, $packet_version,
                ${$packet_info}{origNet}, ${$packet_info}{DestNet},
                $ProdCode, ${$packet_info}{PassWord},
-               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone}, $AuxNet,
+               ${$packet_info}{origZone}, ${$packet_info}{DestZone}, $AuxNet,
                $CapWord, $ProdCode2, $CapWord2,
-               ${$packet_info}{OrgZone}, ${$packet_info}{DestZone},
+               ${$packet_info}{origZone}, ${$packet_info}{DestZone},
                ${$packet_info}{OrgPoint}, ${$packet_info}{DestPoint}, $ProdSpec);
     syswrite($PKT,$buffer,58);
 
@@ -385,7 +385,7 @@ sub write_ftn_packet {
 
         $serialno = unpack("%16C*",join('',@lines));
         $serialno = sprintf("%lx",$serialno + time);
-        print $PKT "\1MSGID: ${$packet_info}{OrgZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
+        print $PKT "\1MSGID: ${$packet_info}{origZone}:${$packet_info}{origNet}/${$packet_info}{origNode}.${$packet_info}{OrgPoint} $serialno$EOL";
 
         print $PKT @lines; 
         print $PKT $EOL,${$packet_info}{TearLine},$Origin,$seen_by,$Path;
